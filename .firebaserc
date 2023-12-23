@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "playlists-21cc0": {
+      "hosting": {
+        "playlists": [
+          "playlists-21cc0"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "playlists-21cc0"
+  }
+}
