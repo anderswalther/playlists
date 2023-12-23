@@ -1,12 +1,37 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  collectionData,
+} from '@angular/fire/firestore';
 import { Playlist } from '../app/models/playlist';
+import { Observable } from 'rxjs';
+import { Component, inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlaylistService {
-  constructor(privgit ate firebase: AngularFirestore) {}
+  private firestore: Firestore = inject(Firestore); // inject Cloud Firestore
+  playlists$: Observable<Playlist[]>;
+  playlistCollection = collection(this.firestore, 'Playlist');
 
-  addPlaylist(playlist: Playlist): void {}
+  constructor() {
+    // get documents (data) from the collection using collectionData
+    this.playlists$ = collectionData(this.playlistCollection) as Observable<
+      Playlist[]
+    >;
+  }
+
+  public addPlaylist(playlist: Playlist) {
+    addDoc(this.playlistCollection, JSON.parse(JSON.stringify(playlist))).then(() => {});
+  }
+
+  public getAllPlaylists(): Observable<Playlist[]> {
+    // get a reference to the user-profile collection
+
+    // get documents (data) from the collection using collectionData
+    return collectionData(this.playlistCollection) as Observable<Playlist[]>;
+  }
 }
