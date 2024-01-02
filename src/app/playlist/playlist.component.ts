@@ -17,7 +17,7 @@ import { StateChanges } from '../models/youtube-models';
       <div [style.backgroundImage]="'url(' + playlist.background + ')'" class="container">
         <span class="message" style="white-space: pre-line">{{ playlist.message }}</span>
 
-        @if (playlistStartet) {
+        @if (playlistStartet && currentSongIndex < songs.length) {
           <div class="current-song">
             <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
             <span>{{ currentSongAuthor + ' - ' + currentSongTitle }}</span>
@@ -32,7 +32,6 @@ import { StateChanges } from '../models/youtube-models';
             [videoId]="songs[currentSongIndex]"
             [width]="1"
             [height]="1"
-            (ready)="onReady($event)"
             (stateChange)="onStateChange($event)"
             (error)="onError($event)"
             (apiChange)="onApiChange($event)"
@@ -87,7 +86,7 @@ import { StateChanges } from '../models/youtube-models';
       border-radius: 16px;
       color: #D09C66;
       background-color: rgb(0, 0, 0, 0.8);
-      margin-top: 350px;
+      margin-top: 20vh;
       margin-left: auto;
       margin-right: auto;
     }
@@ -110,7 +109,6 @@ export class PlaylistComponent implements OnInit {
   currentSongTitle = '';
   currentSongAuthor = '';
   playlistStartet = false;
-  testmessage = 'hurururua hurah uahsd uahrsuhas ruh uarh \n huehufheufh eufh uefh uefh';
   constructor(private playlistService: PlaylistService) {}
 
   ngOnInit(): void {}
@@ -129,6 +127,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   startPlayback() {
+    this.currentSongIndex = 0;
     this.player?.playVideo();
     this.playlistStartet = true;
   }
@@ -139,26 +138,20 @@ export class PlaylistComponent implements OnInit {
     }
   }
 
-  onReady($event: YT.PlayerEvent) {
-    console.log('on ready!');
-  }
-
-  onReady2($event: YT.Player) {
-    console.log('on ready!');
-  }
-
   onStateChange($event: YT.OnStateChangeEvent) {
     switch ($event.data) {
       case YT.PlayerState.UNSTARTED:
         this.currentSongAuthor = ($event.target as any).playerInfo.videoData.author.replace(' - Topic', '');
-        this.currentSongTitle = ($event.target as any).playerInfo.videoData.title;
+        this.currentSongTitle = ($event.target as any).playerInfo.videoData.title.replace('(Official Video)', '');
         break;
       case YT.PlayerState.ENDED:
         this.currentSongIndex++;
         break;
       case YT.PlayerState.CUED:
-        this.player = $event.target;
-        this.player.playVideo();
+        if (this.currentSongIndex < this.songs.length) {
+          this.player = $event.target;
+          this.player.playVideo();
+        }
         break;
     }
   }
