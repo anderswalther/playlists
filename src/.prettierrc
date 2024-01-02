@@ -1,0 +1,15 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "singleQuote": true,
+  "useTabs": false,
+  "printWidth": 120,
+  "overrides": [
+    {
+      "files": "*.component.ts",
+      "options": {
+        "htmlWhitespaceSensitivity": "ignore"
+      }
+    }
+  ]
+}

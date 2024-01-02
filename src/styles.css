@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: quenting;
+}
+
+@font-face {
+  font-family: quenting;
+  src: url(assets/Quentin.otf);
+}
+
+@font-face {
+  font-family: dkaurevoir;
+  src: url(assets/DKAuRevoir.otf);
+}

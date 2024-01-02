@@ -1,7 +1,6 @@
 export class Playlist {
   constructor(
     public id: string,
-    public title: string,
     public message: string,
     public song1: string,
     public song2: string,
@@ -12,6 +11,6 @@ export class Playlist {
   ) {}
 
   public static emptyPlaylist(): Playlist {
-    return new Playlist('', '', '', '', '', '', '', '', '');
+    return new Playlist('', '', '', '', '', '', '', '');
   }
 }
