@@ -5,5 +5,5 @@ import { PlaylistComponent } from './playlist/playlist.component';
 export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'playlist', component: PlaylistComponent },
-  { path: '', component: AdminComponent },
+  { path: '', component: PlaylistComponent },
 ];

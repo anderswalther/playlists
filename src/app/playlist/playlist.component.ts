@@ -21,6 +21,11 @@ import { StateChanges } from '../models/youtube-models';
           <div class="current-song">
             <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
             <span>{{ currentSongAuthor + ' - ' + currentSongTitle }}</span>
+            @if (isPlaying) {
+              <img class="play-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
+            } @else {
+              <img class="pause-button" src="assets/icons/play.png" alt="pause-button" (click)="startPlayback()" />
+            }
           </div>
         } @else {
           <button class="start-button" (click)="startPlayback()">Begynd her</button>
@@ -46,16 +51,17 @@ import { StateChanges } from '../models/youtube-models';
       background-repeat: no-repeat;
       background-size: 100% 100%;
       min-height: 100vh;
-      padding-top: 20vh;
+      padding-top: 15vh;
       box-sizing: border-box;
     }
 
     span.message {
       display: block;
-      font-size: 60px;
-      max-width: 50vw;
+      font-size: 50px;
+      max-width: 60vw;
       margin-left: auto;
       margin-right: auto;
+      padding: 16px;
       text-align: center;
       color: #D09C66;
       background-color: rgb(0, 0, 0, 0.2);
@@ -86,12 +92,21 @@ import { StateChanges } from '../models/youtube-models';
       border-radius: 16px;
       color: #D09C66;
       background-color: rgb(0, 0, 0, 0.8);
-      margin-top: 20vh;
+      margin-top: 15vh;
       margin-left: auto;
       margin-right: auto;
     }
 
     button.start-button:hover {
+      cursor: pointer;
+    }
+
+    .play-button, .pause-button {
+      widt: 16px;
+      height: 16px;
+    }
+
+    .play-button:hover, .pause-button:hover {
       cursor: pointer;
     }
   `,
@@ -109,6 +124,7 @@ export class PlaylistComponent implements OnInit {
   currentSongTitle = '';
   currentSongAuthor = '';
   playlistStartet = false;
+  isPlaying = false;
   constructor(private playlistService: PlaylistService) {}
 
   ngOnInit(): void {}
@@ -130,11 +146,13 @@ export class PlaylistComponent implements OnInit {
     this.currentSongIndex = 0;
     this.player?.playVideo();
     this.playlistStartet = true;
+    this.isPlaying = true;
   }
 
-  stopPlayback($event: any) {
+  pausePlayback() {
     if (this.player) {
-      this.player.stopVideo();
+      this.player.pauseVideo();
+      this.isPlaying = false;
     }
   }
 
