@@ -53,25 +53,27 @@ import { StateChanges } from '../models/youtube-models';
       min-height: 100vh;
       padding-top: 15vh;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
     }
 
     span.message {
       display: block;
-      font-size: 50px;
-      max-width: 60vw;
+      font-size: clamp(1.5rem, 0.4688rem + 2.2vw, 3.125rem);
+      width: clamp(45vw, 60vw, 70vw);
       margin-left: auto;
       margin-right: auto;
       padding: 16px;
       text-align: center;
       color: #D09C66;
-      background-color: rgb(0, 0, 0, 0.2);
+      background-color: rgb(0, 0, 0, 0.3);
       border-radius: 16px;
       font-family: dkaurevoir;
     }
 
     div.current-song {
-      margin-top: 20vh;
-      font-size: 80px;
+      margin-top: auto;
+      font-size: clamp(1.875rem, 1.0938rem + 2.5vw, 5rem);
       font-weight: bold;
       color: black;
       width: 100%;
@@ -84,17 +86,19 @@ import { StateChanges } from '../models/youtube-models';
 
     button.start-button {
       display: block;
-      width: 400px;
+      width: fit-content;
+      min-width: 30vw;
       height: 50x;
-      font-size: 30px;
+      font-size: clamp(1rem, 0.7813rem + 0.7vw, 1.875rem);
       padding: 32px;
       border: none;
       border-radius: 16px;
       color: #D09C66;
       background-color: rgb(0, 0, 0, 0.8);
-      margin-top: 15vh;
+      margin-top: auto;
       margin-left: auto;
       margin-right: auto;
+      margin-bottom: 10vh;
     }
 
     button.start-button:hover {
@@ -102,12 +106,23 @@ import { StateChanges } from '../models/youtube-models';
     }
 
     .play-button, .pause-button {
-      widt: 16px;
+      width: 16px;
       height: 16px;
     }
 
     .play-button:hover, .pause-button:hover {
       cursor: pointer;
+    }
+
+    @media screen and (max-width: 600px) {
+      span.message {
+        width: 90%;
+        box-sizing: border-box;
+      }
+
+      button.start-button {
+        padding: 16px 32px;
+      }
     }
   `,
 })
