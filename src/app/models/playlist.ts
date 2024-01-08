@@ -10,7 +10,7 @@ export class Playlist {
     public background: string
   ) {}
 
-  public static emptyPlaylist(): Playlist {
-    return new Playlist('', '', '', '', '', '', '', '');
+  public static emptyPlaylist(id: string = ''): Playlist {
+    return new Playlist(id, '', '', '', '', '', '', '');
   }
 }

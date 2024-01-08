@@ -30,8 +30,8 @@ export class PlaylistService {
     >;
   }
 
-  public addPlaylist(playlist: Playlist) {
-    setDoc(doc(this.firestore, 'Playlist', playlist.id), {
+  public addPlaylist(playlist: Playlist): Promise<void> {
+    return setDoc(doc(this.firestore, 'Playlist', playlist.id), {
       message: playlist.message,
       background: playlist.background,
       song1: playlist.song1,

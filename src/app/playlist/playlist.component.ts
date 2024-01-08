@@ -81,6 +81,7 @@ import { StateChanges } from '../models/youtube-models';
     }
 
     div.current-song span {
+      font-family: quenting;
       display: block;
     }
 
