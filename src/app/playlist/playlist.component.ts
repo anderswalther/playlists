@@ -85,7 +85,8 @@ import { LoadscreenComponent } from '../loadscreen/loadscreen.component';
 
     span.message {
       display: block;
-      font-size: clamp(1.5rem, 0.4688rem + 2.2vw, 3.125rem);
+      font-size: clamp(1.75rem, 0.4688rem + 2.45vw, 3.375rem);
+      font-weight: bold;
       width: clamp(45vw, 60vw, 70vw);
       margin-left: auto;
       margin-right: auto;
