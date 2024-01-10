@@ -35,7 +35,7 @@ import { LoadscreenComponent } from '../loadscreen/loadscreen.component';
               @if (isPlaying) {
                 <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
               } @else {
-                <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="startPlayback()" />
+                <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()" />
               }
 
               @if (this.currentSongIndex < this.songs.length - 1) {
@@ -192,6 +192,11 @@ export class PlaylistComponent implements OnInit {
     this.currentSongIndex = 0;
     this.player?.playVideo();
     this.playlistStartet = true;
+    this.isPlaying = true;
+  }
+
+  resumePlayback() {
+    this.player?.playVideo();
     this.isPlaying = true;
   }
 
