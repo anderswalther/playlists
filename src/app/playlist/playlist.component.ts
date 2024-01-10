@@ -75,8 +75,8 @@ import { LoadscreenComponent } from '../loadscreen/loadscreen.component';
     .container {
       background-repeat: no-repeat;
       background-size: 100% 100%;
-      height: 100vh;
-      max-height: 100vh;
+      height: 100svh;
+      max-height: 100svh;
       padding-top: 15vh;
       box-sizing: border-box;
       display: flex;
