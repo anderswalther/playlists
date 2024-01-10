@@ -7,50 +7,76 @@ import { SafePipe } from '../safe.pipe';
 import { YouTubePlayer } from '@angular/youtube-player';
 import { SharedModule } from '../shared.module';
 import { StateChanges } from '../models/youtube-models';
+import { LoadscreenComponent } from '../loadscreen/loadscreen.component';
 
 @Component({
   selector: 'app-playlist',
   standalone: true,
-  imports: [SafePipe, SharedModule],
+  imports: [SafePipe, SharedModule, LoadscreenComponent],
   template: `
     @if (playlist) {
-      <div [style.backgroundImage]="'url(' + playlist.background + ')'" class="container">
-        <span class="message" style="white-space: pre-line">{{ playlist.message }}</span>
+      @if (backgroundLoaded) {
+        <div [style.backgroundImage]="'url(' + playlist.background + ')'" class="container">
+          <span class="message" style="white-space: pre-line">{{ playlist.message }}</span>
 
-        @if (playlistStartet && currentSongIndex < songs.length) {
-          <div class="current-song">
-            <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
-            <span>{{ currentSongAuthor + ' - ' + currentSongTitle }}</span>
-            @if (isPlaying) {
-              <img class="play-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
-            } @else {
-              <img class="pause-button" src="assets/icons/play.png" alt="pause-button" (click)="startPlayback()" />
-            }
-          </div>
-        } @else {
-          <button class="start-button" (click)="startPlayback()">Begynd her</button>
-        }
+          @if (playlistStartet && currentSongIndex < songs.length) {
+            <div class="current-song">
+              <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
+              <span>{{ currentSongAuthor + ' - ' + currentSongTitle }}</span>
 
-        @if (playlist) {
-          <youtube-player
-            #player
-            [videoId]="songs[currentSongIndex]"
-            [width]="1"
-            [height]="1"
-            (stateChange)="onStateChange($event)"
-            (error)="onError($event)"
-            (apiChange)="onApiChange($event)"
-            loadApi="false"
-          />
-        }
-      </div>
+              @if (this.currentSongIndex > 0) {
+                <img
+                  class="player-button"
+                  src="assets/icons/previous.png"
+                  alt="previous-button"
+                  (click)="playPrevious()"
+                />
+              }
+              @if (isPlaying) {
+                <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
+              } @else {
+                <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="startPlayback()" />
+              }
+
+              @if (this.currentSongIndex < this.songs.length - 1) {
+                <img class="player-button" src="assets/icons/next-button.png" alt="next-button" (click)="playNext()" />
+              }
+            </div>
+          } @else {
+            <button class="start-button" (click)="startPlayback()">Begynd her</button>
+          }
+
+          @if (playlist) {
+            <youtube-player
+              #player
+              [videoId]="songs[currentSongIndex]"
+              [width]="1"
+              [height]="1"
+              (stateChange)="onStateChange($event)"
+              (error)="onError($event)"
+              (apiChange)="onApiChange($event)"
+              loadApi="false"
+            />
+          }
+        </div>
+      } @else {
+        <img class="preloading-image" [src]="playlist.background" (load)="onBackgroundLoaded()" />
+        <app-loadscreen></app-loadscreen>
+      }
     }
   `,
   styles: `
+    .preloading-image {
+      width: 1px;
+      height: 1px;
+      margin-left: -10000px;
+    }
+
     .container {
       background-repeat: no-repeat;
       background-size: 100% 100%;
-      min-height: 100vh;
+      height: 100vh;
+      max-height: 100vh;
       padding-top: 15vh;
       box-sizing: border-box;
       display: flex;
@@ -106,13 +132,12 @@ import { StateChanges } from '../models/youtube-models';
       cursor: pointer;
     }
 
-    .play-button, .pause-button {
+    .player-button {
       width: 16px;
       height: 16px;
-    }
-
-    .play-button:hover, .pause-button:hover {
       cursor: pointer;
+      margin-left: 8px;
+      margin-right: 8px;
     }
 
     @media screen and (max-width: 600px) {
@@ -141,6 +166,7 @@ export class PlaylistComponent implements OnInit {
   currentSongAuthor = '';
   playlistStartet = false;
   isPlaying = false;
+  backgroundLoaded = false;
   constructor(private playlistService: PlaylistService) {}
 
   ngOnInit(): void {}
@@ -158,11 +184,23 @@ export class PlaylistComponent implements OnInit {
     }
   }
 
+  onBackgroundLoaded() {
+    this.backgroundLoaded = true;
+  }
+
   startPlayback() {
     this.currentSongIndex = 0;
     this.player?.playVideo();
     this.playlistStartet = true;
     this.isPlaying = true;
+  }
+
+  playPrevious() {
+    this.currentSongIndex--;
+  }
+
+  playNext() {
+    this.currentSongIndex++;
   }
 
   pausePlayback() {
