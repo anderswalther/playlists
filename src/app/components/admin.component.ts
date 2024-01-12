@@ -10,39 +10,103 @@ import emailjs from '@emailjs/browser';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
+    <h1>Create a playlist</h1>
     <div class="container">
       @if (creatingPlalist) {
-        <form>
-          <input readonly [ngModel]="model.id" name="id" placeholder="id" />
-          <textarea [(ngModel)]="model.message" name="message" placeholder="message"></textarea>
-          <input [(ngModel)]="model.background" name="background" placeholder="background" />
-          <input [(ngModel)]="model.song1" name="song1" placeholder="song1" />
-          <input [(ngModel)]="model.song2" name="song2" placeholder="song2" />
-          <input [(ngModel)]="model.song3" name="song3" placeholder="song3" />
-          <input [(ngModel)]="model.song4" name="song4" placeholder="song4" />
-          <input [(ngModel)]="model.song5" name="song5" placeholder="song5" />
-          <button (click)="onSubmit()">Gem</button>
-        </form>
+        <div class="input-fields">
+          <form #form="ngForm">
+            <textarea
+              class="message"
+              [(ngModel)]="model.message"
+              name="message"
+              placeholder="message *"
+              rows="8"
+              required
+            ></textarea>
+            <input
+              class="backgorund-input"
+              [(ngModel)]="model.background"
+              required
+              name="background"
+              placeholder="background *"
+            />
+            <input [(ngModel)]="model.song1" required name="song1" placeholder="song1 *" />
+            <input [(ngModel)]="model.song2" required name="song2" placeholder="song2 *" />
+            <input [(ngModel)]="model.song3" required name="song3" placeholder="song3 *" />
+            <input [(ngModel)]="model.song4" required name="song4" placeholder="song4 *" />
+            <input [(ngModel)]="model.song5" required name="song5" placeholder="song5 *" />
+          </form>
+          <button [disabled]="!form.valid" (click)="onSubmit()">Save</button>
+        </div>
+        <div class="howtos">
+          <img src="assets/howto_image.png" />
+          <img src="assets/howto_songid.png" />
+        </div>
       } @else if (sharingPlaylist) {
-        <p>Del din playliste med en du holder af:</p>
-        <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Dit navn" />
-        <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Modtagerens email" />
-        <button (click)="onSubmitEmail()">Del playlisten</button>
+        <div class="input-fields shareing-playlist">
+          <p>
+            Your playlist is ready at
+            <i>
+              <b>share-playlists.com/playlist?id={{ model.id }}</b>
+            </i>
+          </p>
+          <p>Share your playlist with someone you care about:</p>
+          <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *" />
+          <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *" />
+          <button (click)="onSubmitEmail()">Send</button>
+        </div>
       } @else {
-        All is done
+        <p>It's away! Enjoy :) </p>
       }
     </div>
   `,
   styles: `
+    :host {
+      padding-top: 50px;
+      display: block;
+      text-align: center;
+      background-color: black;
+      height: 100svh;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 50px;
+      color: #D53349;
+      font-weight: bold;
+    }
+
     .container {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
       margin-top: 60px;
       width: 80vw;
+      max-width: 1000px;
       margin-left: auto;
       margin-right: auto;
       background-color: #f1f1f1;
       padding: 40px 20px;
       border-radius: 4px;
       box-shadow: inset 0 1px 3px #ddd;
+    }
+
+    .input-fields {
+      flex: 1;
+      background-color: #2F232A;
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    .shareing-playlist {
+      color: #D53349;
+    }
+
+    img {
+      display: block;
+      width: 300px;
+      margin-bottom: 36px;
+      border-radius: 4px;
     }
 
     textarea,
@@ -55,6 +119,21 @@ import emailjs from '@emailjs/browser';
       border: none;
       box-shadow: inset 0 1px 3px #ddd;
       box-sizing: border-box;
+    }
+
+    .backgorund-input,
+    .message {
+      margin-bottom: 50px;
+    }
+
+    button {
+      width: 200px;
+      padding: 8px 32px;
+      border: none;
+      background-color: #D53349;
+      border-radius: 4px;
+      margin-top: 50px;
+      cursor: pointer;
     }
   `,
 })
@@ -81,7 +160,7 @@ export class AdminComponent implements OnInit {
     const templateParams = {
       from_name: this.yourName,
       to_email: this.emailRecipient,
-      message: `Jeg har lavet en playliste til dig. Check den ud her: share-playlists.com?id=${this.model.id}`,
+      message: `I made a playlist for you. Check it out here: share-playlists.com/playlist?id=${this.model.id}`,
     };
 
     emailjs.send('service_0ue6app', 'template_5g76d67', templateParams, '_Nn64Tbb0vHbotSkk').then(
