@@ -1,0 +1,73 @@
+@font-face {
+  font-family: dkaurevoir;
+  src: url(DKAuRevoir.otf);
+}
+
+.print-section {
+  width: 29.7cm;
+  height: 21cm;
+  background-color: yellow;
+}
+
+.playlist-content {
+  display: flex;
+  flex-direction: column;
+  width: 15.24cm;
+  height: 10.16cm;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.message {
+  display: block;
+  font-size: 24px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5vh;;
+
+  padding: 16px;
+  text-align: center;
+  color: #D09C66;
+  background-color: rgb(0, 0, 0, 0.3);
+  border-radius: 16px;
+  font-weight: 400;
+  font-family: "dkaurevoir";
+}
+
+.qr-section {
+  margin-top: auto;
+  height: 25%;
+}
+
+qrcode {
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.qrcode {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  height: 100%;
+}
+.qrcode canvas,
+.qrcode img {
+  width: unset !important;
+  height: 100% !important;
+  border-radius: 4px;
+}
+
+@media print {
+  @font-face {
+    font-family: dkaurevoir;
+    src: url(DKAuRevoir.otf);
+  }
+
+  span.message {
+    font-family: "dkaurevoir";
+  }
+}

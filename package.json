@@ -21,6 +21,8 @@
     "@angular/router": "^17.0.0",
     "@angular/youtube-player": "^17.0.4",
     "@emailjs/browser": "^3.11.0",
+    "angularx-qrcode": "^17.0.0",
+    "ngx-print": "^1.5.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

@@ -135,6 +135,14 @@ import emailjs from '@emailjs/browser';
       margin-top: 50px;
       cursor: pointer;
     }
+
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
   `,
 })
 export class AdminComponent implements OnInit {
