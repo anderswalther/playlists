@@ -4,16 +4,17 @@ import { Playlist } from '../models/playlist';
 import { CommonModule } from '@angular/common';
 import { PlaylistService } from '../../services/playlist-service';
 import emailjs from '@emailjs/browser';
+import { PrinterComponent } from './printer.component';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PrinterComponent],
   template: `
-    <h1>Create a playlist</h1>
-    <div class="container">
-      @if (creatingPlalist) {
-        <div class="input-fields">
+    @if (creatingPlalist) {
+      <h1>Create a playlist</h1>
+      <div class="create-container">
+        <div class="input-section">
           <form #form="ngForm">
             <textarea
               class="message"
@@ -42,23 +43,34 @@ import emailjs from '@emailjs/browser';
           <img src="assets/howto_image.png" />
           <img src="assets/howto_songid.png" />
         </div>
-      } @else if (sharingPlaylist) {
-        <div class="input-fields shareing-playlist">
-          <p>
-            Your playlist is ready at
-            <i>
-              <b>share-playlists.com/playlist?id={{ model.id }}</b>
-            </i>
-          </p>
-          <p>Share your playlist with someone you care about:</p>
+      </div>
+    } @else if (sharingPlaylist) {
+      <h1>Your playlist is ready!</h1>
+      <a [href]="'share-playlists.com/playlist?id=' + model.id">share-playlists.com/playlist?id={{ model.id }}</a>
+      <div class="container">
+        <div class="input-section share-playlist">
+          <h2>Share</h2>
+          <p class="sub-title">Share your playlist with someone you care about:</p>
           <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *" />
           <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *" />
           <button (click)="onSubmitEmail()">Send</button>
         </div>
-      } @else {
-        <p>It's away! Enjoy :) </p>
-      }
-    </div>
+        <div class="or-section">
+          <span>OR</span>
+        </div>
+        <div class="input-section print-playlist">
+          <h2>Print</h2>
+          <p class="sub-title">
+            Print your playlist and give it is a gift to someone you care about. The printet playlist will contain your
+            background-image, your message and a QR-code which will link to your playlist.
+          </p>
+          <p class="help">(Remember to check the print-option to include background images)</p>
+          <app-printer [playlist]="model"></app-printer>
+        </div>
+      </div>
+    } @else {
+      <p>It's away! Enjoy :)</p>
+    }
   `,
   styles: `
     :host {
@@ -66,22 +78,48 @@ import emailjs from '@emailjs/browser';
       display: block;
       text-align: center;
       background-color: black;
-      height: 100svh;
+      min-height: 100svh;
+      height: 100%;
+      padding-bottom: 16px;
+      box-sizing: border-box;
     }
 
-    h1 {
+    h1, h2, .or-section {
       margin-top: 0;
-      font-size: 50px;
       color: #D53349;
       font-weight: bold;
     }
 
+    h1 {
+      font-size: 50px;
+    }
+
+    h2, .or-section {
+      font-size: 32px;
+    }
+
+    a {
+      color: #e56b20;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    p.sub-title, p.help {
+      color: #e56b20;
+      text-align: left;
+    }
+
+    .create-container,
     .container {
       display: flex;
       justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
       gap: 50px;
       margin-top: 60px;
       width: 80vw;
+      height: 400px;
       max-width: 1000px;
       margin-left: auto;
       margin-right: auto;
@@ -90,12 +128,27 @@ import emailjs from '@emailjs/browser';
       border-radius: 4px;
       box-shadow: inset 0 1px 3px #ddd;
     }
+    .create-container {
+      height: 650px;
+    }
 
-    .input-fields {
+    .or-section {
+      align-self: center;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    .input-section {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       background-color: #2F232A;
       padding: 16px;
       border-radius: 4px;
+      height: 100%;
     }
 
     .shareing-playlist {
@@ -132,15 +185,31 @@ import emailjs from '@emailjs/browser';
       border: none;
       background-color: #D53349;
       border-radius: 4px;
-      margin-top: 50px;
+      font-weight: bold;
       cursor: pointer;
     }
 
+    app-printer, button {
+      margin-top: auto;
+    }
 
-    @media screen and (max-width: 768px) {
+
+    @media screen and (max-width: 800px) {
+      .create-container,
       .container {
         flex-direction: column;
         gap: 16px;
+        height: auto;
+        align-items: center;
+      }
+
+      .input-section {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .input-section button, .input-section app-printer {
+        margin-top: 32px;
       }
     }
   `,

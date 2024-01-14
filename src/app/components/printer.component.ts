@@ -19,15 +19,28 @@ import { QRCodeModule } from 'angularx-qrcode';
             [colorLight]="'#e3e3df'"
           ></qrcode>
         </div>
+        <div class="link">share-playlists.com/playlist?id={{ playlist.id }}</div>
       </div>
     </div>
 
-    <button styleSheetFile="assets/print-styling.css" printTitle="MyTitle" printSectionId="print-section" ngxPrint>
-      print
+    <button styleSheetFile="assets/print-styling.css" printTitle="_" printSectionId="print-section" ngxPrint>
+      Print
     </button>
   `,
   styles: `
     .container {
+      display: none;
+    }
+
+    button {
+      width: 200px;
+      padding: 8px 32px;
+      border: none;
+      background-color: #D53349;
+      border-radius: 4px;
+      margin-top: auto;
+      font-weight: bold;
+      cursor: pointer;
     }
 
   `,

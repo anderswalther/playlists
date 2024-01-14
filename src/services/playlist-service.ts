@@ -25,9 +25,7 @@ export class PlaylistService {
 
   constructor() {
     // get documents (data) from the collection using collectionData
-    this.playlists$ = collectionData(this.playlistCollection) as Observable<
-      Playlist[]
-    >;
+    this.playlists$ = collectionData(this.playlistCollection) as Observable<Playlist[]>;
   }
 
   public addPlaylist(playlist: Playlist): Promise<void> {
@@ -49,16 +47,17 @@ export class PlaylistService {
   }
 
   async getPlaylists(): Promise<Playlist[]> {
-    return (
-      await getDocs(query(collection(this.firestore, 'Playlist')))
-    ).docs.map((playlist) => playlist.data() as Playlist);
+    return (await getDocs(query(collection(this.firestore, 'Playlist')))).docs.map(
+      (playlist) => playlist.data() as Playlist
+    );
   }
 
   async getPlaylist(id: string): Promise<Playlist | undefined> {
     const docRef = doc(this.firestore, 'Playlist', id);
     const plSnapshot = await getDoc(docRef);
-    console.log(plSnapshot.data() || 'Doc does not exists');
 
-    return plSnapshot.data() as Playlist;
+    const playlist = plSnapshot.data() as Playlist;
+    playlist.id = id;
+    return playlist;
   }
 }

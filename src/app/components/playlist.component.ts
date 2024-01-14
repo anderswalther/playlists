@@ -5,12 +5,11 @@ import { SafePipe } from '../shared/pipes/safe.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { LoadscreenComponent } from './loadscreen.component';
 import { PlayerComponent } from './player.component';
-import { PrinterComponent } from './printer.component';
 
 @Component({
   selector: 'app-playlist',
   standalone: true,
-  imports: [SafePipe, SharedModule, LoadscreenComponent, PlayerComponent, PrinterComponent],
+  imports: [SafePipe, SharedModule, LoadscreenComponent, PlayerComponent],
   template: `
     @if (playlist) {
       @if (backgroundLoaded) {
@@ -24,8 +23,6 @@ import { PrinterComponent } from './printer.component';
         <img class="preloading-image" [src]="playlist.background" (load)="onBackgroundLoaded()" />
         <app-loadscreen></app-loadscreen>
       }
-
-      <app-printer [playlist]="playlist"></app-printer>
     }
   `,
   styles: `
