@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
   standalone: true,
   imports: [SharedModule],
   template: `
-    @if (!playlistStartet || currentSongIndex >= songs.length - 1) {
+    @if (!playlistStarted || currentSongIndex >= songs.length) {
       <button class="start-button" (click)="startPlayback()">Begynd her</button>
     } @else {
       <div class="current-song">
@@ -16,16 +16,16 @@ import { SharedModule } from '../shared/shared.module';
         <span>{{ currentSongAuthor + ' - ' + currentSongTitle }}</span>
 
         @if (this.currentSongIndex > 0) {
-          <img class="player-button" src="assets/icons/previous.png" alt="previous-button" (click)="playPrevious()" />
+          <img class="player-button" src="assets/icons/previous.png" alt="previous-button" (click)="playPrevious()"/>
         }
         @if (isPlaying) {
-          <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
+          <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()"/>
         } @else {
-          <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()" />
+          <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()"/>
         }
 
         @if (this.currentSongIndex < this.songs.length - 1) {
-          <img class="player-button" src="assets/icons/next-button.png" alt="next-button" (click)="playNext()" />
+          <img class="player-button" src="assets/icons/next-button.png" alt="next-button" (click)="playNext()"/>
         }
       </div>
     }
@@ -99,7 +99,7 @@ export class PlayerComponent implements OnChanges {
   currentSongIndex = 0;
   currentSongTitle = '';
   currentSongAuthor = '';
-  playlistStartet = false;
+  playlistStarted = false;
   isPlaying = false;
   backgroundLoaded = false;
 
@@ -118,7 +118,7 @@ export class PlayerComponent implements OnChanges {
   startPlayback() {
     this.currentSongIndex = 0;
     this.player?.playVideo();
-    this.playlistStartet = true;
+    this.playlistStarted = true;
     this.isPlaying = true;
   }
 

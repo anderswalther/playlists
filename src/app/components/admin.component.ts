@@ -5,13 +5,14 @@ import { CommonModule } from '@angular/common';
 import { PlaylistService } from '../../services/playlist-service';
 import emailjs from '@emailjs/browser';
 import { PrinterComponent } from './printer.component';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [CommonModule, FormsModule, PrinterComponent],
   template: `
-    @if (creatingPlalist) {
+    @if (creatingPlaylist) {
       <h1>Create a playlist</h1>
       <div class="create-container">
         <div class="input-section">
@@ -25,34 +26,35 @@ import { PrinterComponent } from './printer.component';
               required
             ></textarea>
             <input
-              class="backgorund-input"
+              class="background-input"
               [(ngModel)]="model.background"
               required
               name="background"
               placeholder="background *"
             />
-            <input [(ngModel)]="model.song1" required name="song1" placeholder="song1 *" />
-            <input [(ngModel)]="model.song2" required name="song2" placeholder="song2 *" />
-            <input [(ngModel)]="model.song3" required name="song3" placeholder="song3 *" />
-            <input [(ngModel)]="model.song4" required name="song4" placeholder="song4 *" />
-            <input [(ngModel)]="model.song5" required name="song5" placeholder="song5 *" />
+            <input [(ngModel)]="model.song1" required name="song1" placeholder="song1 *"/>
+            <input [(ngModel)]="model.song2" required name="song2" placeholder="song2 *"/>
+            <input [(ngModel)]="model.song3" required name="song3" placeholder="song3 *"/>
+            <input [(ngModel)]="model.song4" required name="song4" placeholder="song4 *"/>
+            <input [(ngModel)]="model.song5" required name="song5" placeholder="song5 *"/>
           </form>
           <button [disabled]="!form.valid" (click)="onSubmit()">Save</button>
         </div>
         <div class="howtos">
-          <img src="assets/howto_image.png" />
-          <img src="assets/howto_songid.png" />
+          <img src="assets/howto_image.png"/>
+          <img src="assets/howto_songid.png"/>
         </div>
       </div>
     } @else if (sharingPlaylist) {
       <h1>Your playlist is ready!</h1>
-      <a [href]="'share-playlists.com/playlist?id=' + model.id">share-playlists.com/playlist?id={{ model.id }}</a>
+      <a [href]="'https://share-playlists.com/playlist?id=' + model.id">share-playlists.com/playlist?id={{ model.id }}</a>
       <div class="container">
         <div class="input-section share-playlist">
           <h2>Share</h2>
           <p class="sub-title">Share your playlist with someone you care about:</p>
-          <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *" />
-          <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *" />
+          <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *"/>
+          <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *"/>
+          <textarea [(ngModel)]="yourEmailMessage" name="emailMessage" placeholder="email"></textarea>
           <button (click)="onSubmitEmail()">Send</button>
         </div>
         <div class="or-section">
@@ -61,7 +63,7 @@ import { PrinterComponent } from './printer.component';
         <div class="input-section print-playlist">
           <h2>Print</h2>
           <p class="sub-title">
-            Print your playlist and give it is a gift to someone you care about. The printet playlist will contain your
+            Print your playlist and give it is a gift to someone you care about. The printed playlist will contain your
             background-image, your message and a QR-code which will link to your playlist.
           </p>
           <p class="help">(Remember to check the print-option to include background images)</p>
@@ -218,17 +220,18 @@ export class AdminComponent implements OnInit {
   model: Playlist = Playlist.emptyPlaylist(this.randomString(8));
   emailRecipient = '';
   yourName = '';
+  yourEmailMessage = '';
 
-  creatingPlalist = true;
+  creatingPlaylist = true;
   sharingPlaylist = false;
 
-  constructor(private playlistService: PlaylistService) {}
+  constructor(private playlistService: PlaylistService, private toastr: ToastrService) {}
 
   ngOnInit(): void {}
 
   onSubmit(): void {
     this.playlistService.addPlaylist(this.model).then(() => {
-      this.creatingPlalist = false;
+      this.creatingPlaylist = false;
       this.sharingPlaylist = true;
     });
   }
@@ -237,16 +240,16 @@ export class AdminComponent implements OnInit {
     const templateParams = {
       from_name: this.yourName,
       to_email: this.emailRecipient,
-      message: `I made a playlist for you. Check it out here: share-playlists.com/playlist?id=${this.model.id}`,
+      message: this.yourEmailMessage,
+      link_to_playlist: `share-playlists.com/playlist?id=${this.model.id}`
     };
 
     emailjs.send('service_0ue6app', 'template_5g76d67', templateParams, '_Nn64Tbb0vHbotSkk').then(
       (response) => {
-        this.sharingPlaylist = false;
-        console.log('SUCCESS!', response.status, response.text);
+        this.toastr.success('Mail has been send!');
       },
       (err) => {
-        console.log('FAILED...', err);
+        this.toastr.warning('Something went wrong');
       }
     );
   }

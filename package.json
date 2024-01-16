@@ -23,6 +23,7 @@
     "@emailjs/browser": "^3.11.0",
     "angularx-qrcode": "^17.0.0",
     "ngx-print": "^1.5.1",
+    "ngx-toastr": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
