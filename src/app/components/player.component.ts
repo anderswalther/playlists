@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
   standalone: true,
   imports: [SharedModule],
   template: `
-    @if (!playlistStarted || currentSongIndex >= songs.length) {
+    @if (!playlistStarted || currentSongIndex > songs.length) {
       <button class="start-button" (click)="startPlayback()">Begynd her</button>
     } @else {
       <div class="current-song">
