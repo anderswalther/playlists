@@ -1,16 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Playlist } from '../models/playlist';
+import { Playlist, Song } from '../models/playlist';
 import { CommonModule } from '@angular/common';
 import { PlaylistService } from '../../services/playlist-service';
 import emailjs from '@emailjs/browser';
 import { PrinterComponent } from './printer.component';
-import {ToastrService} from "ngx-toastr";
+import { ToastrService } from 'ngx-toastr';
+import { YoutubeApiService } from '../../services/youtubeapi-service';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [CommonModule, FormsModule, PrinterComponent],
+  styleUrls: ['./admin.component.css'],
   template: `
     @if (creatingPlaylist) {
       <h1>Create a playlist</h1>
@@ -25,6 +27,7 @@ import {ToastrService} from "ngx-toastr";
               rows="8"
               required
             ></textarea>
+
             <input
               class="background-input"
               [(ngModel)]="model.background"
@@ -32,28 +35,38 @@ import {ToastrService} from "ngx-toastr";
               name="background"
               placeholder="background *"
             />
-            <input [(ngModel)]="model.song1" required name="song1" placeholder="song1 *"/>
-            <input [(ngModel)]="model.song2" required name="song2" placeholder="song2 *"/>
-            <input [(ngModel)]="model.song3" required name="song3" placeholder="song3 *"/>
-            <input [(ngModel)]="model.song4" required name="song4" placeholder="song4 *"/>
-            <input [(ngModel)]="model.song5" required name="song5" placeholder="song5 *"/>
+
+            <div class="add-song-row">
+              <input [(ngModel)]="ytIdOfSongToAdd" name="songToAdd" placeholder="add song id" />
+              <button (click)="onYtIdChanged()">Add song</button>
+            </div>
+
+            @for (song of model.songs; track song.ytId) {
+              <div class="input-row">
+                <input [(ngModel)]="song.ytId" name="{{ song.ytId }}_id" placeholder="youtube id *" />
+                <input [(ngModel)]="song.title" name="{{ song.title }}_id" placeholder="title *" />
+                <input [(ngModel)]="song.artist" name="{{ song.artist }}_id" placeholder="youtube id *" />
+              </div>
+            }
           </form>
-          <button [disabled]="!form.valid" (click)="onSubmit()">Save</button>
+          <button class="submit" [disabled]="!form.valid" (click)="onSubmit()">Save</button>
         </div>
         <div class="howtos">
-          <img src="assets/howto_image.png"/>
-          <img src="assets/howto_songid.png"/>
+          <img src="assets/howto_image.png" />
+          <img src="assets/howto_songid.png" />
         </div>
       </div>
     } @else if (sharingPlaylist) {
       <h1>Your playlist is ready!</h1>
-      <a [href]="'https://share-playlists.com/playlist?id=' + model.id">share-playlists.com/playlist?id={{ model.id }}</a>
+      <a [href]="'https://share-playlists.com/playlist?id=' + model.id">
+        share-playlists.com/playlist?id={{ model.id }}
+      </a>
       <div class="container">
         <div class="input-section share-playlist">
           <h2>Share</h2>
           <p class="sub-title">Share your playlist with someone you care about:</p>
-          <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *"/>
-          <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *"/>
+          <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *" />
+          <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *" />
           <textarea [(ngModel)]="yourEmailMessage" name="emailMessage" placeholder="email"></textarea>
           <button (click)="onSubmitEmail()">Send</button>
         </div>
@@ -74,158 +87,22 @@ import {ToastrService} from "ngx-toastr";
       <p>It's away! Enjoy :)</p>
     }
   `,
-  styles: `
-    :host {
-      padding-top: 50px;
-      display: block;
-      text-align: center;
-      background-color: black;
-      min-height: 100svh;
-      height: 100%;
-      padding-bottom: 16px;
-      box-sizing: border-box;
-    }
-
-    h1, h2, .or-section {
-      margin-top: 0;
-      color: #D53349;
-      font-weight: bold;
-    }
-
-    h1 {
-      font-size: 50px;
-    }
-
-    h2, .or-section {
-      font-size: 32px;
-    }
-
-    a {
-      color: #e56b20;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    p.sub-title, p.help {
-      color: #e56b20;
-      text-align: left;
-    }
-
-    .create-container,
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 50px;
-      margin-top: 60px;
-      width: 80vw;
-      height: 400px;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
-      background-color: #f1f1f1;
-      padding: 40px 20px;
-      border-radius: 4px;
-      box-shadow: inset 0 1px 3px #ddd;
-    }
-    .create-container {
-      height: 650px;
-    }
-
-    .or-section {
-      align-self: center;
-    }
-
-    form {
-      width: 100%;
-    }
-
-    .input-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #2F232A;
-      padding: 16px;
-      border-radius: 4px;
-      height: 100%;
-    }
-
-    .shareing-playlist {
-      color: #D53349;
-    }
-
-    img {
-      display: block;
-      width: 300px;
-      margin-bottom: 36px;
-      border-radius: 4px;
-    }
-
-    textarea,
-    input {
-      width: 100%;
-      display: block;
-      margin-bottom: 0.5rem;
-      padding: 12px 16px;
-      border-radius: 4px;
-      border: none;
-      box-shadow: inset 0 1px 3px #ddd;
-      box-sizing: border-box;
-    }
-
-    .backgorund-input,
-    .message {
-      margin-bottom: 50px;
-    }
-
-    button {
-      width: 200px;
-      padding: 8px 32px;
-      border: none;
-      background-color: #D53349;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    app-printer, button {
-      margin-top: auto;
-    }
-
-
-    @media screen and (max-width: 800px) {
-      .create-container,
-      .container {
-        flex-direction: column;
-        gap: 16px;
-        height: auto;
-        align-items: center;
-      }
-
-      .input-section {
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      .input-section button, .input-section app-printer {
-        margin-top: 32px;
-      }
-    }
-  `,
 })
 export class AdminComponent implements OnInit {
   model: Playlist = Playlist.emptyPlaylist(this.randomString(8));
   emailRecipient = '';
   yourName = '';
   yourEmailMessage = '';
+  ytIdOfSongToAdd = '';
 
   creatingPlaylist = true;
   sharingPlaylist = false;
 
-  constructor(private playlistService: PlaylistService, private toastr: ToastrService) {}
+  constructor(
+    private playlistService: PlaylistService,
+    private youtubeApiService: YoutubeApiService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -241,7 +118,7 @@ export class AdminComponent implements OnInit {
       from_name: this.yourName,
       to_email: this.emailRecipient,
       message: this.yourEmailMessage,
-      link_to_playlist: `share-playlists.com/playlist?id=${this.model.id}`
+      link_to_playlist: `share-playlists.com/playlist?id=${this.model.id}`,
     };
 
     emailjs.send('service_0ue6app', 'template_5g76d67', templateParams, '_Nn64Tbb0vHbotSkk').then(
@@ -261,5 +138,16 @@ export class AdminComponent implements OnInit {
       result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
     }
     return result;
+  }
+
+  onYtIdChanged() {
+    if (this.ytIdOfSongToAdd.length > 0) {
+      this.youtubeApiService.getSong(this.ytIdOfSongToAdd).subscribe((song: Song) => {
+        if (song) {
+          this.model.songs.push(song);
+          this.ytIdOfSongToAdd = '';
+        }
+      });
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { PlaylistService } from '../../services/playlist-service';
-import { Playlist } from '../models/playlist';
+import { Playlist, Song } from '../models/playlist';
 import { SharedModule } from '../shared/shared.module';
 
 @Component({
@@ -8,31 +8,31 @@ import { SharedModule } from '../shared/shared.module';
   standalone: true,
   imports: [SharedModule],
   template: `
-    @if (!playlistStarted || currentSongIndex > songs.length) {
+    @if (!playlistStarted || currentSongIndex >= songs.length) {
       <button class="start-button" (click)="startPlayback()">Begynd her</button>
     } @else {
       <div class="current-song">
         <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
-        <span>{{ currentSongAuthor + ' - ' + currentSongTitle }}</span>
+        <span>{{ songs[currentSongIndex].artist + ' - ' + songs[currentSongIndex].title }}</span>
 
         @if (this.currentSongIndex > 0) {
-          <img class="player-button" src="assets/icons/previous.png" alt="previous-button" (click)="playPrevious()"/>
+          <img class="player-button" src="assets/icons/previous.png" alt="previous-button" (click)="playPrevious()" />
         }
         @if (isPlaying) {
-          <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()"/>
+          <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
         } @else {
-          <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()"/>
+          <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()" />
         }
 
         @if (this.currentSongIndex < this.songs.length - 1) {
-          <img class="player-button" src="assets/icons/next-button.png" alt="next-button" (click)="playNext()"/>
+          <img class="player-button" src="assets/icons/next-button.png" alt="next-button" (click)="playNext()" />
         }
       </div>
     }
 
     <youtube-player
       #player
-      [videoId]="songs[currentSongIndex]"
+      [videoId]="songs[currentSongIndex].ytId"
       [width]="1"
       [height]="1"
       (stateChange)="onStateChange($event)"
@@ -95,23 +95,15 @@ export class PlayerComponent implements OnChanges {
   @Input() playlist?: Playlist;
 
   player?: YT.Player;
-  songs: string[] = [];
+  songs: Song[] = [];
   currentSongIndex = 0;
-  currentSongTitle = '';
-  currentSongAuthor = '';
   playlistStarted = false;
   isPlaying = false;
   backgroundLoaded = false;
 
   ngOnChanges(): void {
     if (this.playlist) {
-      this.songs = [
-        this.playlist?.song1,
-        this.playlist?.song2,
-        this.playlist?.song3,
-        this.playlist?.song4,
-        this.playlist?.song5,
-      ];
+      this.songs = this.playlist.songs;
     }
   }
 
@@ -144,10 +136,6 @@ export class PlayerComponent implements OnChanges {
 
   onStateChange($event: YT.OnStateChangeEvent) {
     switch ($event.data) {
-      case YT.PlayerState.UNSTARTED:
-        this.currentSongAuthor = ($event.target as any).playerInfo.videoData.author.replace(' - Topic', '');
-        this.currentSongTitle = ($event.target as any).playerInfo.videoData.title.replace('(Official Video)', '');
-        break;
       case YT.PlayerState.ENDED:
         this.currentSongIndex++;
         break;

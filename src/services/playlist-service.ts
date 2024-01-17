@@ -29,21 +29,14 @@ export class PlaylistService {
   }
 
   public addPlaylist(playlist: Playlist): Promise<void> {
+    const songs = playlist.songs.map((obj) => {
+      return Object.assign({}, obj);
+    });
     return setDoc(doc(this.firestore, 'Playlist', playlist.id), {
       message: playlist.message,
       background: playlist.background,
-      song1: playlist.song1,
-      song2: playlist.song2,
-      song3: playlist.song3,
-      song4: playlist.song4,
-      song5: playlist.song5,
+      songs,
     });
-
-    /*
-    addDoc(this.playlistCollection, JSON.parse(JSON.stringify(playlist))).then(
-      () => {}
-    );
-    */
   }
 
   async getPlaylists(): Promise<Playlist[]> {
