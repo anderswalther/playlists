@@ -37,7 +37,7 @@ import { YoutubeApiService } from '../../services/youtubeapi-service';
             />
 
             <div class="add-song-row">
-              <input [(ngModel)]="ytIdOfSongToAdd" name="songToAdd" placeholder="add song id" />
+              <input [(ngModel)]="ytIdOfSongToAdd" name="songToAdd" placeholder="Youtube video url or id" />
               <button (click)="onYtIdChanged()">Add song</button>
             </div>
 
@@ -53,7 +53,6 @@ import { YoutubeApiService } from '../../services/youtubeapi-service';
         </div>
         <div class="howtos">
           <img src="assets/howto_image.png" />
-          <img src="assets/howto_songid.png" />
         </div>
       </div>
     } @else if (sharingPlaylist) {
