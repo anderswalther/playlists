@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Playlist } from '../models/playlist';
 import { NgxPrintModule } from 'ngx-print';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -19,11 +19,17 @@ import { QRCodeModule } from 'angularx-qrcode';
             [colorLight]="'#e3e3df'"
           ></qrcode>
         </div>
-        <div class="link">share-playlists.com/playlist?id={{ playlist.id }}</div>
+        <div class="link">www.share-playlists.com/playlist?id={{ playlist.id }}</div>
       </div>
     </div>
 
-    <button styleSheetFile="assets/print-styling.css" printTitle="_" printSectionId="print-section" ngxPrint>
+    <button
+      #printButton
+      styleSheetFile="assets/print-styling.css"
+      printTitle="_"
+      printSectionId="print-section"
+      ngxPrint
+    >
       Print
     </button>
   `,
@@ -33,18 +39,16 @@ import { QRCodeModule } from 'angularx-qrcode';
     }
 
     button {
-      width: 200px;
-      padding: 8px 32px;
-      border: none;
-      background-color: #D53349;
-      border-radius: 4px;
-      margin-top: auto;
-      font-weight: bold;
-      cursor: pointer;
+      visibility: hidden
     }
-
   `,
 })
 export class PrinterComponent {
   @Input() playlist!: Playlist;
+  @ViewChild('printButton') printButton?: ElementRef;
+  public print(): void {
+    if (this.printButton) {
+      this.printButton.nativeElement.click();
+    }
+  }
 }

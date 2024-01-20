@@ -123,7 +123,7 @@ input {
   margin-bottom: 0;
 }
 
-.backgorund-input,
+.background-input,
 .message {
   margin-bottom: 50px;
 }
@@ -138,7 +138,8 @@ button {
   cursor: pointer;
 }
 
-app-printer,
+button.send-email,
+button.print-button,
 button.submit {
   margin-top: auto;
 }

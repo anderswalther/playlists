@@ -1,15 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { PlaylistService } from '../../services/playlist-service';
 import { Playlist } from '../models/playlist';
 import { SafePipe } from '../shared/pipes/safe.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { LoadscreenComponent } from './loadscreen.component';
 import { PlayerComponent } from './player.component';
+import { PrinterComponent } from './printer.component';
 
 @Component({
   selector: 'app-playlist',
   standalone: true,
-  imports: [SafePipe, SharedModule, LoadscreenComponent, PlayerComponent],
+  imports: [SafePipe, SharedModule, LoadscreenComponent, PlayerComponent, PrinterComponent],
   template: `
     @if (playlist) {
       @if (backgroundLoaded) {
@@ -18,6 +19,8 @@ import { PlayerComponent } from './player.component';
           @if (playlist) {
             <app-player [playlist]="playlist"></app-player>
           }
+          <app-printer #printer [playlist]="playlist"></app-printer>
+          <img class="print-button" src="assets/icons/printer.png" alt="print button" (click)="print()" />
         </div>
       } @else {
         <img class="preloading-image" [src]="playlist.background" (load)="onBackgroundLoaded()" />
@@ -34,6 +37,7 @@ import { PlayerComponent } from './player.component';
 
     .container {
       background-repeat: no-repeat;
+      background-attachment: fixed;
       background-size: cover;
       height: 100svh;
       max-height: 100svh;
@@ -68,6 +72,18 @@ import { PlayerComponent } from './player.component';
       right: 16px;
     }
 
+    img.print-button {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    img.print-button:hover {
+      cursor: pointer;
+    }
+
     @media screen and (max-width: 600px) {
       span.message {
         width: 90%;
@@ -81,6 +97,7 @@ import { PlayerComponent } from './player.component';
   `,
 })
 export class PlaylistComponent {
+  @ViewChild('printer') printer?: PrinterComponent;
   @Input()
   set id(id: string) {
     this.loadPlaylist(id);
@@ -96,5 +113,11 @@ export class PlaylistComponent {
 
   onBackgroundLoaded() {
     this.backgroundLoaded = true;
+  }
+
+  print() {
+    if (this.printer) {
+      this.printer.print();
+    }
   }
 }

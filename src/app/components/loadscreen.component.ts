@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @Component({
   selector: 'app-loadscreen',
   standalone: true,
-  imports: [],
+  imports: [SpinnerComponent],
   template: `
     <p>Din playliste klargøres!!</p>
+    <app-spinner></app-spinner>
   `,
   styles: `
 

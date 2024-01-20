@@ -1,25 +1,30 @@
+@page {
+  size: 15.24cm 10.16cm;
+}
+
+#print-section {
+  width: 15.24cm;
+  height: 10.16cm;
+}
+
 @font-face {
   font-family: dkaurevoir;
   src: url(DKAuRevoir.otf);
 }
 
-#print-section {
-  width: 29.7cm;
-  height: 21cm;
-}
-
 .playlist-content {
   display: flex;
   flex-direction: column;
-  width: 15.24cm;
-  height: 10.16cm;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
 }
 
-.playlist-content .link, .playlist-content .message {
-  color: #D09C66;
-  font-family: "dkaurevoir";
+.playlist-content .link,
+.playlist-content .message {
+  color: #d09c66;
+  font-family: 'dkaurevoir';
   font-weight: 400;
 }
 
@@ -29,7 +34,7 @@
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 5vh;;
+  margin-top: 5vh;
   padding: 16px;
   text-align: center;
   background-color: rgb(0, 0, 0, 0.3);
@@ -49,9 +54,9 @@
   font-size: 12px;
 }
 
- .qr-section {
+.qr-section {
   margin-top: auto;
-  height: 25%;
+  height: 20%;
 }
 
 qrcode {
@@ -82,6 +87,6 @@ qrcode {
   }
 
   span.message {
-    font-family: "dkaurevoir";
+    font-family: 'dkaurevoir';
   }
 }

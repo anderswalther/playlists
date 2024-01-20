@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Playlist, Song } from '../models/playlist';
 import { CommonModule } from '@angular/common';
@@ -67,7 +67,7 @@ import { YoutubeApiService } from '../../services/youtubeapi-service';
           <input type="text" [(ngModel)]="yourName" name="yourName" placeholder="Your name *" />
           <input type="email" [(ngModel)]="emailRecipient" name="Recipient" placeholder="Receivers email *" />
           <textarea [(ngModel)]="yourEmailMessage" name="emailMessage" placeholder="email"></textarea>
-          <button (click)="onSubmitEmail()">Send</button>
+          <button class="send-email" (click)="onSubmitEmail()">Send</button>
         </div>
         <div class="or-section">
           <span>OR</span>
@@ -79,7 +79,8 @@ import { YoutubeApiService } from '../../services/youtubeapi-service';
             background-image, your message and a QR-code which will link to your playlist.
           </p>
           <p class="help">(Remember to check the print-option to include background images)</p>
-          <app-printer [playlist]="model"></app-printer>
+          <app-printer #printer [playlist]="model"></app-printer>
+          <button class="print-button" (click)="print()">Print</button>
         </div>
       </div>
     } @else {
@@ -88,6 +89,7 @@ import { YoutubeApiService } from '../../services/youtubeapi-service';
   `,
 })
 export class AdminComponent implements OnInit {
+  @ViewChild('printer') printer?: PrinterComponent;
   model: Playlist = Playlist.emptyPlaylist(this.randomString(8));
   emailRecipient = '';
   yourName = '';
@@ -147,6 +149,12 @@ export class AdminComponent implements OnInit {
           this.ytIdOfSongToAdd = '';
         }
       });
+    }
+  }
+
+  print() {
+    if (this.printer) {
+      this.printer.print();
     }
   }
 }
