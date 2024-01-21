@@ -1,0 +1,72 @@
+:host {
+  height: 550px;
+}
+
+.container,
+.inner-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 20px 20px;
+  box-sizing: border-box;
+}
+
+.inner-container {
+  gap: 48px;
+}
+
+form {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.or-section {
+  align-self: center;
+}
+
+button.send-email,
+button.print-button {
+  margin-top: auto;
+}
+
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+p.sub-title,
+p.help {
+  color: var(--secondary-color);
+  text-align: left;
+}
+
+@media screen and (max-width: 900px) {
+  :host {
+    height: unset;
+  }
+
+  .container {
+    padding: 8px 0;
+  }
+
+  .inner-container {
+    flex-direction: column;
+    gap: 16px;
+    height: auto;
+    align-items: center;
+  }
+
+  .input-section {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .input-section button.submit,
+  .input-section app-printer {
+    margin-top: 32px;
+  }
+}

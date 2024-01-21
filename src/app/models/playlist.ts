@@ -1,13 +1,24 @@
 export class Playlist {
+  public id: string;
   constructor(
-    public id: string,
     public message: string,
     public background: string,
     public songs: Song[]
-  ) {}
+  ) {
+    this.id = this.getRandomString(8);
+  }
 
-  public static emptyPlaylist(id: string = ''): Playlist {
-    return new Playlist(id, '', '', []);
+  public static emptyPlaylist(): Playlist {
+    return new Playlist('', '', []);
+  }
+
+  private getRandomString(length: number) {
+    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    for (var i = 0; i < length; i++) {
+      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
   }
 }
 

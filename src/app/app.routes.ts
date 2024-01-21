@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdminComponent } from './components/admin.component';
+import { AdminComponent } from './components/admin/admin.component';
 import { PlaylistComponent } from './components/playlist.component';
 import { PrinterComponent } from './components/printer.component';
 
