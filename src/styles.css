@@ -21,7 +21,8 @@ body {
 }
 
 form textarea,
-form input {
+form input,
+form select {
   width: 100%;
   display: block;
   margin-bottom: 0.5rem;

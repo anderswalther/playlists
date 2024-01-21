@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
     @if (!playlistStarted || currentSongIndex >= songs.length) {
       <button class="start-button" (click)="startPlayback()">Begynd her</button>
     } @else {
-      <div class="current-song">
+      <div class="current-song" [style.color]="playlist?.textColor || 'black'">
         <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
         <span>{{ songs[currentSongIndex].artist + ' - ' + songs[currentSongIndex].title }}</span>
 

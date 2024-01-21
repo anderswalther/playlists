@@ -29,6 +29,11 @@ import { YoutubeApiService } from '../../../../services/youtubeapi-service';
             placeholder="background *"
           />
 
+          <select class="song-text-color" [(ngModel)]="model.textColor" name="textColor">
+            <option value="black">Song info color: dark</option>
+            <option value="rgb(215, 154, 164, 0.6)">Song info color: light purple</option>
+          </select>
+
           <div class="add-song-row">
             <input [(ngModel)]="ytIdOfSongToAdd" name="songToAdd" placeholder="Youtube video url or id" />
             <button class="normal-button" (click)="onYtIdChanged()">Add song</button>

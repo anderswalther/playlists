@@ -35,6 +35,7 @@ export class PlaylistService {
     return setDoc(doc(this.firestore, 'Playlist', playlist.id), {
       message: playlist.message,
       background: playlist.background,
+      textColor: playlist.textColor,
       songs,
     });
   }

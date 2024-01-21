@@ -6,7 +6,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
   standalone: true,
   imports: [SpinnerComponent],
   template: `
-    <p>Din playliste klargøres!!</p>
+    <p>Preparing your playlist!!</p>
     <app-spinner></app-spinner>
   `,
   styles: `

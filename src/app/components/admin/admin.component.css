@@ -21,3 +21,10 @@ app-admin-share {
   margin-right: auto;
   box-sizing: border-box;
 }
+
+@media screen and (max-width: 768px) {
+  app-admin-create,
+  app-admin-share {
+    width: 100vw;
+  }
+}

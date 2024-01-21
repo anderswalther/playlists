@@ -3,13 +3,14 @@ export class Playlist {
   constructor(
     public message: string,
     public background: string,
+    public textColor: string,
     public songs: Song[]
   ) {
     this.id = this.getRandomString(8);
   }
 
   public static emptyPlaylist(): Playlist {
-    return new Playlist('', '', []);
+    return new Playlist('', '', 'black', []);
   }
 
   private getRandomString(length: number) {

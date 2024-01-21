@@ -17,6 +17,7 @@ form {
   width: 100%;
 }
 
+.color-selector-row,
 .add-song-row {
   width: 100%;
   display: flex;
@@ -37,7 +38,7 @@ img {
   border-radius: 4px;
 }
 
-.background-input,
+.song-text-color,
 .message {
   margin-bottom: 48px;
 }
