@@ -142,7 +142,9 @@ export class PlayerComponent implements OnChanges {
       case YT.PlayerState.CUED:
         if (this.currentSongIndex < this.songs.length) {
           this.player = $event.target;
-          this.player.playVideo();
+          if (this.playlistStarted) {
+            this.player.playVideo();
+          }
         }
         break;
     }

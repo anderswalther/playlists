@@ -56,7 +56,7 @@ import { PrinterComponent } from './printer.component';
       padding: 16px;
       text-align: center;
       color: #D09C66;
-      background-color: rgb(0, 0, 0, 0.3);
+      background-color: rgb(0, 0, 0, 0.5);
       border-radius: 16px;
       font-family: dkaurevoir;
     }
