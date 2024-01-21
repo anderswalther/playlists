@@ -51,7 +51,7 @@ import { CommonModule } from '@angular/common';
   styles: `
     div.current-song {
       margin-top: auto;
-      font-size: clamp(1.875rem, 1.0938rem + 2.5vw, 5rem);
+      font-size: clamp(1.5rem, 1.0938rem + 2.5vw, 4rem);
       font-weight: bold;
       color: black;
       width: 100%;
@@ -61,6 +61,10 @@ import { CommonModule } from '@angular/common';
     div.current-song span {
       font-family: quenting;
       display: block;
+    }
+
+    div.current-song span:last-child {
+      margin-bottom: 2rem;
     }
 
     button.start-button {
