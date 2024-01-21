@@ -2,11 +2,12 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { PlaylistService } from '../../services/playlist-service';
 import { Playlist, Song } from '../models/playlist';
 import { SharedModule } from '../shared/shared.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, CommonModule],
   template: `
     @if (!playlistStarted || currentSongIndex >= songs.length) {
       <button class="start-button" (click)="startPlayback()">Begynd her</button>
@@ -15,18 +16,26 @@ import { SharedModule } from '../shared/shared.module';
         <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
         <span>{{ songs[currentSongIndex].artist + ' - ' + songs[currentSongIndex].title }}</span>
 
-        @if (this.currentSongIndex > 0) {
-          <img class="player-button" src="assets/icons/previous.png" alt="previous-button" (click)="playPrevious()" />
-        }
+        <img
+          class="normal-icon"
+          src="assets/icons/backward.png"
+          alt="previous-button"
+          [ngClass]="this.currentSongIndex <= 0 ? 'disabled' : ''"
+          (click)="playPrevious()"
+        />
         @if (isPlaying) {
-          <img class="player-button" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
+          <img class="normal-icon" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
         } @else {
-          <img class="player-button" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()" />
+          <img class="normal-icon" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()" />
         }
 
-        @if (this.currentSongIndex < this.songs.length - 1) {
-          <img class="player-button" src="assets/icons/next-button.png" alt="next-button" (click)="playNext()" />
-        }
+        <img
+          class="normal-icon"
+          [ngClass]="this.currentSongIndex >= this.songs.length - 1 ? 'disabled' : ''"
+          src="assets/icons/forward.png"
+          alt="next-button"
+          (click)="playNext()"
+        />
       </div>
     }
 
@@ -75,15 +84,24 @@ import { SharedModule } from '../shared/shared.module';
       cursor: pointer;
     }
 
-    .player-button {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      margin-left: 8px;
-      margin-right: 8px;
+    .normal-icon {
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
     }
 
-    @media screen and (max-width: 600px) {
+    .player-button.disabled {
+      opacity: 0.6;
+    }
+
+    .player-button.disabled:hover {
+      cursor: default;
+    }
+
+    @media screen and (max-width: 768px) {
+      .normal-icon {
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
 
       button.start-button {
         padding: 16px 32px;

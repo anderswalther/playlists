@@ -20,7 +20,7 @@ import { PrinterComponent } from './printer.component';
             <app-player [playlist]="playlist"></app-player>
           }
           <app-printer #printer [playlist]="playlist"></app-printer>
-          <img class="print-button" src="assets/icons/printer.png" alt="print button" (click)="print()" />
+          <img class="normal-icon" src="assets/icons/printer.png" alt="print button" (click)="print()" />
         </div>
       } @else {
         <img class="preloading-image" [src]="playlist.background" (load)="onBackgroundLoaded()" />
@@ -68,20 +68,14 @@ import { PrinterComponent } from './printer.component';
 
     app-printer {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
+      bottom: 32px;
+      right: 32px;
     }
 
-    img.print-button {
-      width: 16px;
-      height: 16px;
+    img.normal-icon {
       position: absolute;
       bottom: 1rem;
       right: 1rem;
-    }
-
-    img.print-button:hover {
-      cursor: pointer;
     }
 
     @media screen and (max-width: 600px) {
