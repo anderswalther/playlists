@@ -1,5 +1,5 @@
 :host {
-  height: 650px;
+  height: 80vh;
 }
 
 .container {
@@ -43,8 +43,11 @@ img {
   margin-bottom: 48px;
 }
 
-button.submit {
+.buttons {
   margin-top: auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
 }
 
 @media screen and (max-width: 900px) {

@@ -49,8 +49,10 @@ import { AdminPreviewComponent } from '../admin-preview/admin-preview.component'
             </div>
           }
         </form>
-        <button class="normal-button submit" [disabled]="!form.valid" (click)="onSubmit()">Save</button>
-        <button class="normal-button preview" [disabled]="!form.valid" (click)="preview()">Preview</button>
+        <div class="buttons">
+          <button class="normal-button preview" [disabled]="!form.valid" (click)="preview()">Preview</button>
+          <button class="normal-button submit" [disabled]="!form.valid" (click)="onSubmit()">Save</button>
+        </div>
       </div>
       <div class="howtos">
         <img src="assets/howto_image.png" />
