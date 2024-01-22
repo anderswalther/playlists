@@ -29,6 +29,11 @@ import { PrinterComponent } from './printer.component';
     }
   `,
   styles: `
+    :host {
+      height: 100svh;
+      max-height: 100svh;
+    }
+
     .preloading-image {
       width: 1px;
       height: 1px;
@@ -39,8 +44,7 @@ import { PrinterComponent } from './printer.component';
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
-      height: 100svh;
-      max-height: 100svh;
+      height: 100%;
       padding-top: 15vh;
       box-sizing: border-box;
       display: flex;
@@ -95,6 +99,11 @@ export class PlaylistComponent {
   @Input()
   set id(id: string) {
     this.loadPlaylist(id);
+  }
+
+  @Input()
+  set previewPlaylist(preview: Playlist) {
+    this.playlist = preview;
   }
 
   playlist?: Playlist = Playlist.emptyPlaylist();

@@ -5,7 +5,8 @@ import { PrinterComponent } from './components/printer.component';
 
 export const routes: Routes = [
   { path: 'print', component: PrinterComponent },
-  { path: 'create', component: AdminComponent },
   { path: 'playlist', component: PlaylistComponent },
+  { path: 'create', component: AdminComponent },
   { path: '', component: AdminComponent },
+  { path: '*', component: AdminComponent },
 ];

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Playlist, Song } from '../../../models/playlist';
 import { YoutubeApiService } from '../../../../services/youtubeapi-service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AdminPreviewComponent } from '../admin-preview/admin-preview.component';
 
 @Component({
   selector: 'app-admin-create',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatDialogModule],
   template: `
     <div class="container">
       <div class="input-section">
@@ -48,6 +50,7 @@ import { YoutubeApiService } from '../../../../services/youtubeapi-service';
           }
         </form>
         <button class="normal-button submit" [disabled]="!form.valid" (click)="onSubmit()">Save</button>
+        <button class="normal-button preview" [disabled]="!form.valid" (click)="preview()">Preview</button>
       </div>
       <div class="howtos">
         <img src="assets/howto_image.png" />
@@ -58,11 +61,14 @@ import { YoutubeApiService } from '../../../../services/youtubeapi-service';
 })
 export class AdminCreateComponent {
   @Input() model!: Playlist;
-  @Output() modelChange = new EventEmitter<Playlist>();
+  @Output() playlistSubmitted = new EventEmitter<Playlist>();
 
   ytIdOfSongToAdd = '';
 
-  constructor(private youtubeApiService: YoutubeApiService) {}
+  constructor(
+    private youtubeApiService: YoutubeApiService,
+    private dialog: MatDialog
+  ) {}
 
   onYtIdChanged() {
     if (this.ytIdOfSongToAdd.length > 0) {
@@ -76,6 +82,17 @@ export class AdminCreateComponent {
   }
 
   onSubmit(): void {
-    this.modelChange.emit(this.model);
+    this.playlistSubmitted.emit(this.model);
+  }
+
+  preview(): void {
+    this.dialog.open(AdminPreviewComponent, {
+      width: '90vw',
+      height: '90vh',
+      data: {
+        playlist: this.model,
+      },
+      panelClass: 'custom-mat-dialog-panel',
+    });
   }
 }

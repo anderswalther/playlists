@@ -17,7 +17,7 @@ import { AdminShareComponent } from './admin-share/admin-share.component';
   template: `
     @if (creatingPlaylist) {
       <h1>Create a playlist</h1>
-      <app-admin-create [model]="model" (modelChange)="onSavePlaylist($event)"></app-admin-create>
+      <app-admin-create [model]="model" (playlistSubmitted)="onSavePlaylist($event)"></app-admin-create>
     } @else if (sharingPlaylist) {
       <h1>Your playlist is ready!</h1>
       <app-admin-share
