@@ -6,11 +6,12 @@ import { SharedModule } from '../shared/shared.module';
 import { LoadscreenComponent } from './loadscreen.component';
 import { PlayerComponent } from './player.component';
 import { PrinterComponent } from './printer.component';
+import { PreloaderComponent } from './preloader/preloader.component';
 
 @Component({
   selector: 'app-playlist',
   standalone: true,
-  imports: [SafePipe, SharedModule, LoadscreenComponent, PlayerComponent, PrinterComponent],
+  imports: [SafePipe, SharedModule, LoadscreenComponent, PlayerComponent, PrinterComponent, PreloaderComponent],
   template: `
     @if (playlist) {
       @if (backgroundLoaded) {
@@ -23,8 +24,11 @@ import { PrinterComponent } from './printer.component';
           <img class="normal-icon" src="assets/icons/printer.png" alt="print button" (click)="print()" />
         </div>
       } @else {
-        <img class="preloading-image" [src]="playlist.background" (load)="onBackgroundLoaded()" />
         <app-loadscreen></app-loadscreen>
+        <app-preloader
+          [backgroundImageUrl]="playlist.background"
+          (allImagesLoaded)="onImagesDoneLoading()"
+        ></app-preloader>
       }
     }
   `,
@@ -32,12 +36,6 @@ import { PrinterComponent } from './printer.component';
     :host {
       height: 100svh;
       max-height: 100svh;
-    }
-
-    .preloading-image {
-      width: 1px;
-      height: 1px;
-      margin-left: -10000px;
     }
 
     .container {
@@ -114,7 +112,8 @@ export class PlaylistComponent {
     this.playlist = await this.playlistService.getPlaylist(id);
   }
 
-  onBackgroundLoaded() {
+  onImagesDoneLoading() {
+    console.log('all done loading');
     this.backgroundLoaded = true;
   }
 

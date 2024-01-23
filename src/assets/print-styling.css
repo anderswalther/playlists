@@ -1,10 +1,7 @@
-@page {
-  size: 15.24cm 10.16cm;
-}
-
 #print-section {
   width: 15.24cm;
   height: 10.16cm;
+  background-color: red;
 }
 
 @font-face {
@@ -16,9 +13,10 @@
   display: flex;
   flex-direction: column;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   width: 100%;
   height: 100%;
+  background-color: blue;
 }
 
 .playlist-content .link,
@@ -39,6 +37,7 @@
   text-align: center;
   background-color: rgb(0, 0, 0, 0.3);
   border-radius: 16px;
+  box-sizing: border-box;
 }
 
 .playlist-content .link {

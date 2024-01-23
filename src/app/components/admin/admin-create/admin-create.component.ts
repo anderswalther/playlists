@@ -43,9 +43,8 @@ import { AdminPreviewComponent } from '../admin-preview/admin-preview.component'
 
           @for (song of model.songs; track song.ytId) {
             <div class="input-row">
-              <input [(ngModel)]="song.ytId" name="{{ song.ytId }}_id" placeholder="youtube id *" />
+              <input [(ngModel)]="song.artist" name="{{ song.artist }}_id" placeholder="artist *" />
               <input [(ngModel)]="song.title" name="{{ song.title }}_id" placeholder="title *" />
-              <input [(ngModel)]="song.artist" name="{{ song.artist }}_id" placeholder="youtube id *" />
             </div>
           }
         </form>

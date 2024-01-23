@@ -50,7 +50,6 @@ export class PlaylistService {
     const docRef = doc(this.firestore, 'Playlist', id);
     const plSnapshot = await getDoc(docRef);
     const dataObj = plSnapshot.data();
-    console.log(plSnapshot.data());
 
     if (!dataObj) {
       return undefined;
