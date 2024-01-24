@@ -113,7 +113,6 @@ export class PlaylistComponent {
   }
 
   onImagesDoneLoading() {
-    console.log('all done loading');
     this.backgroundLoaded = true;
   }
 

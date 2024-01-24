@@ -55,6 +55,8 @@ export class PlaylistService {
       return undefined;
     }
 
-    return dataObj as Playlist;
+    const playlist = dataObj as Playlist;
+    playlist.id = id;
+    return playlist;
   }
 }
