@@ -1,22 +1,25 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Playlist, Song } from '../../../models/playlist';
+import { Song } from '../../../models/playlist';
 import { YoutubeApiService } from '../../../../services/youtubeapi-service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminPreviewComponent } from '../admin-preview/admin-preview.component';
+import { PlaylistService } from '../../../../services/playlist-service';
+import { AdminComponent } from '../admin.component';
 
 @Component({
   selector: 'app-admin-create',
   standalone: true,
   imports: [CommonModule, FormsModule, MatDialogModule],
   template: `
+    <h1>{{ !!playlist.id ? 'Edit your playlist' : 'Create a playlist' }}</h1>
     <div class="container">
       <div class="input-section">
         <form #form="ngForm">
           <textarea
             class="message"
-            [(ngModel)]="model.message"
+            [(ngModel)]="playlist.message"
             name="message"
             placeholder="message *"
             rows="8"
@@ -25,13 +28,13 @@ import { AdminPreviewComponent } from '../admin-preview/admin-preview.component'
 
           <input
             class="background-input"
-            [(ngModel)]="model.background"
+            [(ngModel)]="playlist.background"
             required
             name="background"
             placeholder="background *"
           />
 
-          <select class="song-text-color" [(ngModel)]="model.textColor" name="textColor">
+          <select class="song-text-color" [(ngModel)]="playlist.textColor" name="textColor">
             <option value="black">Song info color: dark</option>
             <option value="rgb(215, 154, 164, 0.6)">Song info color: light purple</option>
           </select>
@@ -41,7 +44,7 @@ import { AdminPreviewComponent } from '../admin-preview/admin-preview.component'
             <button class="normal-button" (click)="onYtIdChanged()">Add song</button>
           </div>
 
-          @for (song of model.songs; track song.ytId) {
+          @for (song of playlist.songs; track song.ytId) {
             <div class="input-row">
               <input [(ngModel)]="song.artist" name="{{ song.artist }}_id" placeholder="artist *" />
               <input [(ngModel)]="song.title" name="{{ song.title }}_id" placeholder="title *" />
@@ -50,7 +53,7 @@ import { AdminPreviewComponent } from '../admin-preview/admin-preview.component'
         </form>
         <div class="buttons">
           <button class="normal-button preview" [disabled]="!form.valid" (click)="preview()">Preview</button>
-          <button class="normal-button submit" [disabled]="!form.valid" (click)="onSubmit()">Save</button>
+          <button class="normal-button submit" [disabled]="!form.valid" (click)="onSubmit()">Publish</button>
         </div>
       </div>
       <div class="howtos">
@@ -60,22 +63,22 @@ import { AdminPreviewComponent } from '../admin-preview/admin-preview.component'
   `,
   styleUrl: './admin-create.component.css',
 })
-export class AdminCreateComponent {
-  @Input() model!: Playlist;
-  @Output() playlistSubmitted = new EventEmitter<Playlist>();
-
+export class AdminCreateComponent extends AdminComponent {
   ytIdOfSongToAdd = '';
 
   constructor(
+    playlistService: PlaylistService,
     private youtubeApiService: YoutubeApiService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    super(playlistService);
+  }
 
   onYtIdChanged() {
     if (this.ytIdOfSongToAdd.length > 0) {
       this.youtubeApiService.getSong(this.ytIdOfSongToAdd).subscribe((song: Song) => {
         if (song) {
-          this.model.songs.push(song);
+          this.playlist.songs.push(song);
           this.ytIdOfSongToAdd = '';
         }
       });
@@ -83,7 +86,9 @@ export class AdminCreateComponent {
   }
 
   onSubmit(): void {
-    this.playlistSubmitted.emit(this.model);
+    this.playlistService.addPlaylist(this.playlist).then(() => {
+      this.router.navigateByUrl(`share/${this.playlist.id}`);
+    });
   }
 
   preview(): void {
@@ -91,7 +96,7 @@ export class AdminCreateComponent {
       width: '90vw',
       height: '90vh',
       data: {
-        playlist: this.model,
+        playlist: this.playlist,
       },
       panelClass: 'custom-mat-dialog-panel',
     });

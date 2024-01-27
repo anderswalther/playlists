@@ -27,7 +27,7 @@ export const appConfig: ApplicationConfig = {
         })
       )
     ),
-    importProvidersFrom(provideAuth(() => getAuth())),
+    //TODO, might need to enablethis again: importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
   ],
 };

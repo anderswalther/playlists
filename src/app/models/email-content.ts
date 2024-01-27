@@ -1,11 +1,12 @@
 export class EmailContent {
   public constructor(
-    public yourName: string,
-    public emailRecipient: string,
-    public emailBody: string
+    public senderName: string,
+    public senderEmail: string,
+    public receiverEmail: string,
+    public message: string
   ) {}
 
   public static emptyEmailContent(): EmailContent {
-    return new EmailContent('', '', '');
+    return new EmailContent('', '', '', '');
   }
 }

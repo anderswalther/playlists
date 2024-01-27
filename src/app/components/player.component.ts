@@ -1,5 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { PlaylistService } from '../../services/playlist-service';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Playlist, Song } from '../models/playlist';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';

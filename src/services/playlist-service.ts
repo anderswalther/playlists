@@ -46,13 +46,15 @@ export class PlaylistService {
     );
   }
 
-  async getPlaylist(id: string): Promise<Playlist | undefined> {
+  async getPlaylist(id: string): Promise<Playlist> {
+    if (!id) return Playlist.emptyPlaylist();
+
     const docRef = doc(this.firestore, 'Playlist', id);
     const plSnapshot = await getDoc(docRef);
     const dataObj = plSnapshot.data();
 
     if (!dataObj) {
-      return undefined;
+      return Playlist.emptyPlaylist();
     }
 
     const playlist = dataObj as Playlist;

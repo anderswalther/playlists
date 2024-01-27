@@ -17,7 +17,7 @@ import { PreloaderComponent } from './preloader/preloader.component';
       @if (backgroundLoaded) {
         <div [style.backgroundImage]="'url(' + playlist.background + ')'" class="container">
           <span class="message" style="white-space: pre-line">{{ playlist.message }}</span>
-          @if (playlist) {
+          @if (playlist && !!playlist.id) {
             <app-player [playlist]="playlist"></app-player>
           }
           <app-printer #printer [playlist]="playlist"></app-printer>
