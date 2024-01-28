@@ -1,3 +1,6 @@
+@page {
+}
+
 @font-face {
   font-family: dkaurevoir;
   src: url(DKAuRevoir.otf);
@@ -74,6 +77,11 @@ qrcode {
 }
 
 @media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
   @font-face {
     font-family: dkaurevoir;
     src: url(DKAuRevoir.otf);
