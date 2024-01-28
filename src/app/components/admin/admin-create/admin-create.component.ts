@@ -7,6 +7,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminPreviewComponent } from '../admin-preview/admin-preview.component';
 import { PlaylistService } from '../../../../services/playlist-service';
 import { AdminComponent } from '../admin.component';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-create',
@@ -69,9 +71,11 @@ export class AdminCreateComponent extends AdminComponent {
   constructor(
     playlistService: PlaylistService,
     private youtubeApiService: YoutubeApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    router: Router,
+    toastr: ToastrService
   ) {
-    super(playlistService);
+    super(playlistService, router, toastr);
   }
 
   onYtIdChanged() {

@@ -8,6 +8,7 @@ body {
   --primary-color: #d53349;
   --secondary-color: #e56b20;
   --background-color: #2f232a;
+  --text-color-orange: #d09c66;
 }
 
 @font-face {
@@ -20,9 +21,9 @@ body {
   src: url(assets/DKAuRevoir.otf);
 }
 
-form textarea,
-form input,
-form select {
+textarea,
+input,
+select {
   width: 100%;
   display: block;
   margin-bottom: 0.5rem;
@@ -31,13 +32,6 @@ form select {
   border: none;
   box-shadow: inset 0 1px 3px #ddd;
   box-sizing: border-box;
-}
-
-form .input-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
 }
 
 .input-section {
@@ -50,6 +44,24 @@ form .input-row {
   border-radius: 4px;
   height: 100%;
   box-sizing: border-box;
+}
+
+.input-section .input-button-row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.input-section .input-button-row input.full-width {
+  width: 80%;
+  margin-bottom: 0;
+}
+
+.input-section .input-button-row input.half-width {
+  width: 40%;
+  margin-bottom: 0;
 }
 
 button.normal-button {

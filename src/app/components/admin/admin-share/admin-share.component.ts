@@ -9,6 +9,8 @@ import { PlaylistService } from '../../../../services/playlist-service';
 import { FeedbackService } from '../../../../services/feedback-service';
 import { AdminComponent } from '../admin.component';
 import { EmailService } from '../../../../services/email-service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-share',
@@ -64,9 +66,11 @@ export class AdminShareComponent extends AdminComponent {
 
   constructor(
     playlistService: PlaylistService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    router: Router,
+    toastr: ToastrService
   ) {
-    super(playlistService);
+    super(playlistService, router, toastr);
   }
 
   onSubmitEmail(): void {

@@ -32,65 +32,7 @@ import { PreloaderComponent } from './preloader/preloader.component';
       }
     }
   `,
-  styles: `
-    :host {
-      height: 100svh;
-      max-height: 100svh;
-    }
-
-    .container {
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-      height: 100%;
-      padding-top: 15vh;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-
-    span.message {
-      display: block;
-      font-size: clamp(1.75rem, 0.4688rem + 2.45vw, 3.375rem);
-      width: clamp(45vw, 60vw, 70vw);
-      margin-left: auto;
-      margin-right: auto;
-      padding: 16px;
-      text-align: center;
-      color: #D09C66;
-      background-color: rgb(0, 0, 0, 0.5);
-      border-radius: 16px;
-      font-family: dkaurevoir;
-    }
-
-    app-player {
-      display: block;
-      margin-top: auto;
-    }
-
-    app-printer {
-      position: absolute;
-      bottom: 32px;
-      right: 32px;
-    }
-
-    img.normal-icon {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-    }
-
-    @media screen and (max-width: 600px) {
-      span.message {
-        width: 90%;
-        box-sizing: border-box;
-      }
-
-      button.start-button {
-        padding: 16px 32px;
-      }
-    }
-  `,
+  styleUrl: './playlist.component.css',
 })
 export class PlaylistComponent {
   @ViewChild('printer') printer?: PrinterComponent;

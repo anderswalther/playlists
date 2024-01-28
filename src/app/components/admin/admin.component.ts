@@ -23,14 +23,13 @@ export class AdminComponent {
     this.loadPlaylist(id);
   }
 
-  protected toastr: ToastrService;
-  protected router: Router;
   playlist: Playlist = Playlist.emptyPlaylist();
 
-  constructor(protected playlistService: PlaylistService) {
-    this.router = Inject(Router);
-    this.toastr = Inject(ToastrService);
-  }
+  constructor(
+    protected playlistService: PlaylistService,
+    protected router: Router,
+    protected toastr: ToastrService
+  ) {}
 
   onMailSend() {
     this.toastr.success('Mail has been send!');
