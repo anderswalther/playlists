@@ -46,12 +46,12 @@ select {
   box-sizing: border-box;
 }
 
+.input-section .input-row,
 .input-section .input-button-row {
   width: 100%;
   display: flex;
   justify-content: flex-start;
   gap: 8px;
-  margin-bottom: 16px;
 }
 
 .input-section .input-button-row input.full-width {
