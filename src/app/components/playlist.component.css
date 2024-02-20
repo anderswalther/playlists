@@ -5,8 +5,8 @@
 
 .container {
   background-repeat: no-repeat;
-  background-attachment: fixed;
   background-size: cover;
+  background-position: center;
   height: 100%;
   padding-top: 15vh;
   box-sizing: border-box;
