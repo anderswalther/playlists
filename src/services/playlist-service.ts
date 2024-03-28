@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import {
   DocumentData,
   Firestore,
@@ -11,28 +11,49 @@ import {
   query,
   setDoc,
 } from '@angular/fire/firestore';
-import { Playlist } from '../app/models/playlist';
-import { Observable, map } from 'rxjs';
+import { Playlist } from '../app/shared/models/playlist';
+import { Observable, map, Subject } from 'rxjs';
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+interface PlaylistState {
+  playlists: Playlist[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlaylistService {
   private firestore: Firestore = inject(Firestore); // inject Cloud Firestore
-  playlists$: Observable<Playlist[]>;
   playlistCollection = collection(this.firestore, 'Playlist');
+  state = signal<PlaylistState>({ playlists: [] });
+
+  // selectors
+  playlists$ = computed(() => this.state().playlists);
 
   constructor() {
     // get documents (data) from the collection using collectionData
-    this.playlists$ = collectionData(this.playlistCollection) as Observable<Playlist[]>;
+    (collectionData(this.playlistCollection, { idField: 'id' }) as Observable<Playlist[]>)
+      .pipe(takeUntilDestroyed())
+      .subscribe((playlists) => {
+        console.log('we got data: ', playlists);
+        this.state.update((state) => ({
+          ...state,
+          playlists,
+        }));
+      });
   }
 
   public addPlaylist(playlist: Playlist): Promise<void> {
     const songs = playlist.songs.map((obj) => {
       return Object.assign({}, obj);
     });
-    return setDoc(doc(this.firestore, 'Playlist', playlist.id), {
+
+    if (!playlist.id) {
+      playlist.generateId();
+    }
+
+    return setDoc(doc(this.firestore, 'Playlist', playlist.id!), {
       message: playlist.message,
       background: playlist.background,
       textColor: playlist.textColor,

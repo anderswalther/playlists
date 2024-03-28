@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { Playlist, Song } from '../models/playlist';
+import { Playlist, Song } from '../shared/models/playlist';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { PrinterComponent } from '../../printer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Playlist } from '../../../models/playlist';
+import { Playlist } from '../../../shared/models/playlist';
 import { CommonModule } from '@angular/common';
-import { EmailContent } from '../../../models/email-content';
+import { EmailContent } from '../../../shared/models/email-content';
 import emailjs from '@emailjs/browser';
 import { PlaylistService } from '../../../../services/playlist-service';
 import { FeedbackService } from '../../../../services/feedback-service';
@@ -74,7 +74,7 @@ export class AdminShareComponent extends AdminComponent {
   }
 
   onSubmitEmail(): void {
-    this.emailService.sendEmail(this.emailContent, this.playlist.id);
+    this.emailService.sendEmail(this.emailContent, this.playlist.id!);
   }
 
   print() {

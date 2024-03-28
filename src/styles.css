@@ -74,6 +74,12 @@ button.normal-button {
   cursor: pointer;
 }
 
+@media screen and (max-width: 500px) {
+  button.normal-button {
+    width: unset;
+  }
+}
+
 h1 {
   font-size: 48px;
 }

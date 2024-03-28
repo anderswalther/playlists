@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Song } from '../app/models/playlist';
+import { Song } from '../app/shared/models/playlist';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +12,7 @@ export class YoutubeApiService {
   constructor(private httpClient: HttpClient) {}
 
   public getSong(enteredYoutubeId: string): Observable<Song> {
-    console.log('fetching for1 ' + enteredYoutubeId);
     const ytId = this.stripIdFromÚrl(enteredYoutubeId);
-    console.log('fetching for2 ' + ytId);
     const urlParams = new HttpParams().set('key', this.youtubeApiKey).set('part', 'snippet').set('id', ytId);
 
     const options = { params: urlParams };

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Playlist } from '../models/playlist';
+import { Playlist } from '../shared/models/playlist';
 import { NgxPrintModule } from 'ngx-print';
 import { QRCodeModule } from 'angularx-qrcode';
 

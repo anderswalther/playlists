@@ -2,7 +2,7 @@
   display: block;
   padding-top: 16px;
   background-color: black;
-  height: 100svh;
+  min-height: 100svh;
   text-align: center;
 }
 
@@ -59,6 +59,7 @@ img {
   display: flex;
   justify-content: space-around;
   gap: 16px;
+  margin-top: 16px;
 }
 
 @media screen and (max-width: 900px) {
@@ -67,9 +68,10 @@ img {
   }
   .container {
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
     height: auto;
     align-items: center;
+    width: unset;
   }
 
   .input-section {
@@ -77,8 +79,15 @@ img {
     box-sizing: border-box;
   }
 
-  .input-section button.submit,
   .input-section app-printer {
-    margin-top: 32px;
+    margin-top: 5px;
+  }
+
+  .add-song-row button {
+    width: 200px;
+  }
+
+  .buttons {
+    flex-wrap: wrap;
   }
 }

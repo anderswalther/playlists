@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { PlaylistService } from '../../../services/playlist-service';
 
 @Component({
   selector: 'app-landingpage',
@@ -14,10 +15,19 @@ import { FormsModule } from '@angular/forms';
         <div class="input-button-row">
           <input class="half-width" #editPlaylistValue placeholder="playlist id" />
           <button class="normal-button" (click)="editPlaylist(editPlaylistValue.value)">Edit Playlist</button>
+          <button class="normal-button" (click)="gotoPlaylist(editPlaylistValue.value)">Goto Playlist</button>
         </div>
-        <div class="input-button-row">
-          <input class="half-width" #gotoPlaylistValue placeholder="playlist id" />
-          <button class="normal-button" (click)="gotoPlaylist(gotoPlaylistValue.value)">Goto Playlist</button>
+
+        <div class="existing-playlists">
+          @for (playlist of playlistService.playlists$(); track playlist.id) {
+            <div class="input-button-row">
+              <span class="message">{{ playlist.message }}</span>
+              <button class="normal-button" (click)="editPlaylist(playlist.id!)">Edit Playlist</button>
+              <button class="normal-button" (click)="gotoPlaylist(playlist.id!)">Goto Playlist</button>
+            </div>
+          } @empty {
+            Empty list of playlists
+          }
         </div>
       </div>
     </div>
@@ -25,14 +35,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './landingpage.component.css',
 })
 export class LandingpageComponent implements OnInit {
+  playlistService = inject(PlaylistService);
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
   editPlaylist(playlistId: string) {
-    this.router.navigateByUrl(`/create/:${playlistId}`);
+    this.router.navigateByUrl(`/create/${playlistId}`);
   }
 
   gotoPlaylist(playlistId: string) {
-    this.router.navigateByUrl(`/playlist/:${playlistId}`);
+    this.router.navigateByUrl(`/playlist?id=${playlistId}`);
   }
 }

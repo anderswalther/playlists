@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Song } from '../../../models/playlist';
+import { Song } from '../../../shared/models/playlist';
 import { YoutubeApiService } from '../../../../services/youtubeapi-service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminPreviewComponent } from '../admin-preview/admin-preview.component';

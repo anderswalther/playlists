@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Playlist, Song } from '../../models/playlist';
+import { Playlist, Song } from '../../shared/models/playlist';
 import { CommonModule } from '@angular/common';
 import { PlaylistService } from '../../../services/playlist-service';
 import emailjs from '@emailjs/browser';

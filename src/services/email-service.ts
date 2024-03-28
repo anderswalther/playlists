@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FeedbackService } from './feedback-service';
 import emailjs from '@emailjs/browser';
-import { EmailContent } from '../app/models/email-content';
+import { EmailContent } from '../app/shared/models/email-content';
 
 @Injectable({
   providedIn: 'root',

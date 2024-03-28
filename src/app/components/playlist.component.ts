@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { PlaylistService } from '../../services/playlist-service';
-import { Playlist } from '../models/playlist';
+import { Playlist } from '../shared/models/playlist';
 import { SafePipe } from '../shared/pipes/safe.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { LoadscreenComponent } from './loadscreen.component';
