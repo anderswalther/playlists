@@ -40,7 +40,8 @@ select {
   flex-direction: column;
   align-items: center;
   background-color: var(--background-color);
-  padding: 16px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   border-radius: 4px;
   height: 100%;
   box-sizing: border-box;
@@ -52,6 +53,7 @@ select {
   display: flex;
   justify-content: flex-start;
   gap: 8px;
+  align-items: center;
 }
 
 .input-section .input-button-row input.full-width {
@@ -72,6 +74,10 @@ button.normal-button {
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.input-button-row .normal-button {
+  margin-bottom: 0.5rem;
 }
 
 @media screen and (max-width: 500px) {

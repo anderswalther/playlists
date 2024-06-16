@@ -25,7 +25,10 @@ form {
   width: 100%;
   max-height: 90%;
   display: block;
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
 }
 
 .color-selector-row,

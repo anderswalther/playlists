@@ -47,9 +47,10 @@ import { ToastrService } from 'ngx-toastr';
           </div>
 
           @for (song of playlist.songs; track song.ytId) {
-            <div class="input-row">
+            <div class="input-button-row">
               <input [(ngModel)]="song.artist" name="{{ song.artist }}_id" placeholder="artist *" />
               <input [(ngModel)]="song.title" name="{{ song.title }}_id" placeholder="title *" />
+              <button class="normal-button" (click)="removeSong(song)">delete</button>
             </div>
           }
         </form>
@@ -104,5 +105,9 @@ export class AdminCreateComponent extends AdminComponent {
       },
       panelClass: 'custom-mat-dialog-panel',
     });
+  }
+
+  removeSong(song: Song) {
+    this.playlist.songs = this.playlist.songs.filter((s) => s.ytId !== song.ytId);
   }
 }

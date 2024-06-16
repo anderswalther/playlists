@@ -1,20 +1,8 @@
 import { Injectable, signal, computed } from '@angular/core';
-import {
-  DocumentData,
-  Firestore,
-  addDoc,
-  collection,
-  collectionData,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, getDoc, getDocs, query, setDoc } from '@angular/fire/firestore';
 import { Playlist } from '../app/shared/models/playlist';
-import { Observable, map, Subject } from 'rxjs';
-import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, take } from 'rxjs';
+import { inject } from '@angular/core';
 
 interface PlaylistState {
   playlists: Playlist[];
@@ -31,10 +19,12 @@ export class PlaylistService {
   // selectors
   playlists$ = computed(() => this.state().playlists);
 
-  constructor() {
+  constructor() {}
+
+  public loadAllPlaylists(): void {
     // get documents (data) from the collection using collectionData
     (collectionData(this.playlistCollection, { idField: 'id' }) as Observable<Playlist[]>)
-      .pipe(takeUntilDestroyed())
+      .pipe(take(1))
       .subscribe((playlists) => {
         console.log('we got data: ', playlists);
         this.state.update((state) => ({
@@ -43,7 +33,6 @@ export class PlaylistService {
         }));
       });
   }
-
   public addPlaylist(playlist: Playlist): Promise<void> {
     const songs = playlist.songs.map((obj) => {
       return Object.assign({}, obj);

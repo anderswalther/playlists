@@ -7,11 +7,10 @@ import { AdminCreateComponent } from './components/admin/admin-create/admin-crea
 import { LandingpageComponent } from './components/landingpage/landingpage.component';
 
 export const routes: Routes = [
+  { path: 'secretstuff', component: LandingpageComponent },
   { path: 'print', component: PrinterComponent },
   { path: 'playlist', component: PlaylistComponent },
   { path: 'create', component: AdminCreateComponent },
   { path: 'edit/:id', component: AdminCreateComponent },
   { path: 'share/:id', component: AdminShareComponent },
-  { path: '', component: LandingpageComponent },
-  { path: '**', component: LandingpageComponent },
 ];

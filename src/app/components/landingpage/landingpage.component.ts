@@ -39,9 +39,12 @@ export class LandingpageComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.playlistService.loadAllPlaylists();
+  }
+
   editPlaylist(playlistId: string) {
-    this.router.navigateByUrl(`/create/${playlistId}`);
+    this.router.navigateByUrl(`/edit/${playlistId}`);
   }
 
   gotoPlaylist(playlistId: string) {
