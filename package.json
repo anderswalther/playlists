@@ -11,17 +11,17 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.0.0",
+    "@angular/animations": "^18.0.6",
     "@angular/cdk": "^17.1.0",
-    "@angular/common": "^17.0.0",
-    "@angular/compiler": "^17.0.0",
-    "@angular/core": "^17.0.0",
+    "@angular/common": "^18.0.6",
+    "@angular/compiler": "^18.0.6",
+    "@angular/core": "^18.0.6",
     "@angular/fire": "^17.0.0",
-    "@angular/forms": "^17.0.0",
+    "@angular/forms": "^18.0.6",
     "@angular/material": "^17.1.0",
-    "@angular/platform-browser": "^17.0.0",
-    "@angular/platform-browser-dynamic": "^17.0.0",
-    "@angular/router": "^17.0.0",
+    "@angular/platform-browser": "^18.0.6",
+    "@angular/platform-browser-dynamic": "^18.0.6",
+    "@angular/router": "^18.0.6",
     "@angular/youtube-player": "^17.0.4",
     "@emailjs/browser": "^3.11.0",
     "angularx-qrcode": "^17.0.0",
@@ -32,14 +32,14 @@
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.0.8",
+    "@angular-devkit/build-angular": "^18.0.7",
     "@angular-eslint/builder": "17.2.1",
     "@angular-eslint/eslint-plugin": "17.2.1",
     "@angular-eslint/eslint-plugin-template": "17.2.1",
     "@angular-eslint/schematics": "17.2.1",
     "@angular-eslint/template-parser": "17.2.1",
-    "@angular/cli": "^17.0.8",
-    "@angular/compiler-cli": "^17.0.0",
+    "@angular/cli": "^18.0.7",
+    "@angular/compiler-cli": "^18.0.6",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "6.19.0",
     "@typescript-eslint/parser": "6.19.0",
@@ -51,6 +51,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.2.4",
-    "typescript": "~5.2.2"
+    "typescript": "~5.4.5"
   }
 }
