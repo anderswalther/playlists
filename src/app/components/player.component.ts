@@ -40,11 +40,12 @@ import { CommonModule } from '@angular/common';
 
     <youtube-player
       #player
+      disablePlaceholder
+      loadApi="false"
       [videoId]="songs[currentSongIndex].ytId"
       [width]="1"
       [height]="1"
       (stateChange)="onStateChange($event)"
-      loadApi="false"
     />
   `,
   styles: `
@@ -157,15 +158,28 @@ export class PlayerComponent implements OnChanges {
 
   onStateChange($event: YT.OnStateChangeEvent) {
     switch ($event.data) {
+      case YT.PlayerState.UNSTARTED:
+        console.log('UNSTARTET');
+        break;
+      case YT.PlayerState.PLAYING:
+        console.log('PLAYING');
+        break;
       case YT.PlayerState.ENDED:
         this.currentSongIndex++;
+        break;
+      case YT.PlayerState.BUFFERING:
+        console.log('BUFFERING');
+        break;
+      case YT.PlayerState.PAUSED:
+        console.log('PAUSED');
         break;
       case YT.PlayerState.CUED:
         if (this.currentSongIndex < this.songs.length) {
           this.player = $event.target;
-          if (this.playlistStarted) {
-            this.player.playVideo();
-          }
+          $event.target.playVideo();
+          //          if (this.playlistStarted) {
+          //            this.player.playVideo();
+          //          }
         }
         break;
     }
