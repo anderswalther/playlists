@@ -1,13 +1,16 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, QueryList, viewChildren, ViewChildren } from '@angular/core';
 import { Playlist, Song } from '../shared/models/playlist';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
+import { YouTubePlayer } from '@angular/youtube-player';
 
 @Component({
   selector: 'app-player',
   standalone: true,
   imports: [SharedModule, CommonModule],
   template: `
+    <div style="color: white">state is : {{ state }}</div>
+    <div style="color: white">state2 is : {{ state2 }}</div>
     @if (!playlistStarted || currentSongIndex >= songs.length) {
       <button class="start-button" (click)="startPlayback()">Begynd her</button>
     } @else {
@@ -38,15 +41,17 @@ import { CommonModule } from '@angular/common';
       </div>
     }
 
-    <youtube-player
-      #player
-      disablePlaceholder
-      loadApi="false"
-      [videoId]="songs[currentSongIndex].ytId"
-      [width]="1"
-      [height]="1"
-      (stateChange)="onStateChange($event)"
-    />
+    @for (song of songs; track song; let index = $index) {
+      <youtube-player
+        #player
+        [videoId]="songs[index].ytId"
+        [width]="200"
+        [height]="200"
+        [startSeconds]="20"
+        (stateChange)="onStateChange($event, index)"
+        (ready)="onPlayerReady($event)"
+      />
+    }
   `,
   styles: `
     div.current-song {
@@ -76,7 +81,7 @@ import { CommonModule } from '@angular/common';
       padding: 32px;
       border: none;
       border-radius: 16px;
-      color: #D09C66;
+      color: #d09c66;
       background-color: rgb(0, 0, 0, 0.8);
       margin-top: auto;
       margin-left: auto;
@@ -113,25 +118,52 @@ import { CommonModule } from '@angular/common';
     }
   `,
 })
-export class PlayerComponent implements OnChanges {
+export class PlayerComponent implements OnChanges, AfterViewInit {
+  @ViewChildren('player') players?: QueryList<YouTubePlayer>;
+
+  ngAfterViewInit() {
+    // print array of CustomComponent objects
+    if (this.players) {
+      console.log(this.players.toArray());
+    }
+  }
+
   @Input() playlist?: Playlist;
 
+  state = 'no state';
+  state2 = 'no state';
+  stateVersion = 0;
   player?: YT.Player;
   songs: Song[] = [];
+  currentPlayerIndex = 0;
   currentSongIndex = 0;
   playlistStarted = false;
   isPlaying = false;
   backgroundLoaded = false;
 
+  playerConfig = {
+    autoplay: 0,
+  };
+
   ngOnChanges(): void {
     if (this.playlist) {
       this.songs = this.playlist.songs;
     }
+    if (this.players) {
+      console.log('in changes, ' + this.players.toArray());
+    }
   }
 
   startPlayback() {
-    this.currentSongIndex = 0;
-    this.player?.playVideo();
+    this.currentPlayerIndex = 0;
+    this.players?.toArray().forEach((player, index) => {
+      player.playVideo();
+      if (index > 0) {
+        setTimeout(() => {
+          player.pauseVideo();
+        }, 500);
+      }
+    });
     this.playlistStarted = true;
     this.isPlaying = true;
   }
@@ -146,7 +178,15 @@ export class PlayerComponent implements OnChanges {
   }
 
   playNext() {
-    this.currentSongIndex++;
+    let currentPlayer = this.players?.get(this.currentPlayerIndex);
+    if (currentPlayer) {
+      currentPlayer.pauseVideo();
+    }
+    this.currentPlayerIndex++;
+    currentPlayer = this.players?.get(this.currentPlayerIndex);
+    if (currentPlayer) {
+      currentPlayer.playVideo();
+    }
   }
 
   pausePlayback() {
@@ -156,32 +196,43 @@ export class PlayerComponent implements OnChanges {
     }
   }
 
-  onStateChange($event: YT.OnStateChangeEvent) {
+  onStateChange($event: YT.OnStateChangeEvent, index: number) {
     switch ($event.data) {
       case YT.PlayerState.UNSTARTED:
+        this.state2 = 'song not started';
         console.log('UNSTARTET');
         break;
       case YT.PlayerState.PLAYING:
+        this.state2 = 'song playing';
         console.log('PLAYING');
         break;
       case YT.PlayerState.ENDED:
-        this.currentSongIndex++;
+        this.currentPlayerIndex++;
+        this.players?.get(this.currentPlayerIndex)?.playVideo();
         break;
       case YT.PlayerState.BUFFERING:
+        this.state2 = 'song buffering';
         console.log('BUFFERING');
         break;
       case YT.PlayerState.PAUSED:
+        this.state2 = 'song paused';
         console.log('PAUSED');
         break;
       case YT.PlayerState.CUED:
-        if (this.currentSongIndex < this.songs.length) {
-          this.player = $event.target;
-          $event.target.playVideo();
-          //          if (this.playlistStarted) {
-          //            this.player.playVideo();
-          //          }
-        }
+        //if (this.players && this.players.length >= index) {
+        //  if (index === 0 && this.playlistStarted) {
+        //    this.players.get(0)?.playVideo();
+        //  } else {
+        //    this.players.get(index)?.pauseVideo();
+        //  }
+        //}
         break;
     }
+  }
+
+  onPlayerReady($event: YT.PlayerEvent) {
+    this.stateVersion++;
+    this.state = 'REAdy player ready ' + this.stateVersion;
+    this.player = $event.target;
   }
 }
