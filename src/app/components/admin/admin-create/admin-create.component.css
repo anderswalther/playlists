@@ -9,7 +9,7 @@
 .container {
   height: 80%;
   width: 80vw;
-  max-width: 1400px;
+  max-width: 80vw;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -19,6 +19,10 @@
   gap: 50px;
   padding: 20px 20px;
   box-sizing: border-box;
+}
+
+.input-section {
+  max-width: 100%;
 }
 
 form {
@@ -37,8 +41,8 @@ form {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 2rem;
 }
 
 .add-song-row input {
@@ -79,6 +83,7 @@ img {
 
   .input-section {
     width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
   }
 

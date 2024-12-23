@@ -15,26 +15,12 @@ import { CommonModule } from '@angular/common';
         <span class="song-number">Sang {{ currentSongIndex + 1 }} af {{ songs.length }}</span>
         <span>{{ songs[currentSongIndex].artist + ' - ' + songs[currentSongIndex].title }}</span>
 
-        <img
-          class="normal-icon"
-          src="assets/icons/backward.png"
-          alt="previous-button"
-          [ngClass]="this.currentSongIndex <= 0 ? 'disabled' : ''"
-          (click)="playPrevious()"
-        />
         @if (isPlaying) {
-          <img class="normal-icon" src="assets/icons/pause.png" alt="pause-button" (click)="pausePlayback()" />
+          <button (click)="pausePlayback()" class="icon-button"><img class="normal-icon" src="assets/icons/pause.png" alt="pause-button" /></button>
         } @else {
-          <img class="normal-icon" src="assets/icons/play.png" alt="pause-button" (click)="resumePlayback()" />
+          <button class="start-button" (click)="resumePlayback()">Fortsæt</button>
         }
 
-        <img
-          class="normal-icon"
-          [ngClass]="this.currentSongIndex >= this.songs.length - 1 ? 'disabled' : ''"
-          src="assets/icons/forward.png"
-          alt="next-button"
-          (click)="playNext()"
-        />
       </div>
     }
 
@@ -71,7 +57,6 @@ import { CommonModule } from '@angular/common';
       display: block;
       width: fit-content;
       min-width: 30vw;
-      height: 50x;
       font-size: clamp(1rem, 0.7813rem + 0.7vw, 1.875rem);
       padding: 32px;
       border: none;
@@ -81,7 +66,6 @@ import { CommonModule } from '@angular/common';
       margin-top: auto;
       margin-left: auto;
       margin-right: auto;
-      margin-bottom: 10vh;
     }
 
     button.start-button:hover {
@@ -91,14 +75,6 @@ import { CommonModule } from '@angular/common';
     .normal-icon {
       margin-left: 1.5rem;
       margin-right: 1.5rem;
-    }
-
-    .player-button.disabled {
-      opacity: 0.6;
-    }
-
-    .player-button.disabled:hover {
-      cursor: default;
     }
 
     @media screen and (max-width: 768px) {
@@ -116,6 +92,7 @@ import { CommonModule } from '@angular/common';
 export class PlayerComponent implements OnChanges {
   @Input() playlist?: Playlist;
 
+  private readonly isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   player?: YT.Player;
   songs: Song[] = [];
   currentSongIndex = 0;
@@ -141,14 +118,6 @@ export class PlayerComponent implements OnChanges {
     this.isPlaying = true;
   }
 
-  playPrevious() {
-    this.currentSongIndex--;
-  }
-
-  playNext() {
-    this.currentSongIndex++;
-  }
-
   pausePlayback() {
     if (this.player) {
       this.player.pauseVideo();
@@ -159,27 +128,21 @@ export class PlayerComponent implements OnChanges {
   onStateChange($event: YT.OnStateChangeEvent) {
     switch ($event.data) {
       case YT.PlayerState.UNSTARTED:
-        console.log('UNSTARTET');
-        break;
-      case YT.PlayerState.PLAYING:
-        console.log('PLAYING');
+        if (this.isIOS && this.currentSongIndex > 0) {
+          this.pausePlayback();
+        }
         break;
       case YT.PlayerState.ENDED:
-        this.currentSongIndex++;
-        break;
-      case YT.PlayerState.BUFFERING:
-        console.log('BUFFERING');
-        break;
-      case YT.PlayerState.PAUSED:
-        console.log('PAUSED');
+        if (this.currentSongIndex < this.songs.length - 1) {
+          this.currentSongIndex++;
+        } else {
+          location.reload();
+        }
         break;
       case YT.PlayerState.CUED:
-        if (this.currentSongIndex < this.songs.length) {
-          this.player = $event.target;
+        this.player = $event.target;
+        if (this.currentSongIndex < this.songs.length && this.playlistStarted) {
           $event.target.playVideo();
-          //          if (this.playlistStarted) {
-          //            this.player.playVideo();
-          //          }
         }
         break;
     }

@@ -9,11 +9,14 @@ import { PlaylistService } from '../../../../services/playlist-service';
 import { AdminComponent } from '../admin.component';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import {
+  YoutubeSearchComponent
+} from "../../../shared/components/youtube-search/youtube-search/youtube-search.component";
 
 @Component({
   selector: 'app-admin-create',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogModule],
+  imports: [CommonModule, FormsModule, MatDialogModule, YoutubeSearchComponent],
   template: `
     <h1>{{ !!playlist.id ? 'Edit your playlist' : 'Create a playlist' }}</h1>
     <div class="container">
@@ -41,10 +44,12 @@ import { ToastrService } from 'ngx-toastr';
             <option value="rgb(215, 154, 164, 0.6)">Song info color: light purple</option>
           </select>
 
+          <app-youtube-search (videoSelected)="findSong($event.id)"></app-youtube-search>
           <div class="add-song-row">
             <input [(ngModel)]="ytIdOfSongToAdd" name="songToAdd" placeholder="Youtube video url or id" />
-            <button class="normal-button" (click)="onYtIdChanged()">Add song</button>
+            <button class="normal-button" (click)="findSong(ytIdOfSongToAdd)">Add song</button>
           </div>
+
 
           @for (song of playlist.songs; track song.ytId) {
             <div class="input-button-row">
@@ -53,14 +58,12 @@ import { ToastrService } from 'ngx-toastr';
               <button class="normal-button" (click)="removeSong(song)">delete</button>
             </div>
           }
+
         </form>
         <div class="buttons">
           <button class="normal-button preview" [disabled]="!form.valid" (click)="preview()">Preview</button>
           <button class="normal-button submit" [disabled]="!form.valid" (click)="onSubmit()">Publish</button>
         </div>
-      </div>
-      <div class="howtos">
-        <img src="assets/howto_image.png" />
       </div>
     </div>
   `,
@@ -79,15 +82,13 @@ export class AdminCreateComponent extends AdminComponent {
     super(playlistService, router, toastr);
   }
 
-  onYtIdChanged() {
-    if (this.ytIdOfSongToAdd.length > 0) {
-      this.youtubeApiService.getSong(this.ytIdOfSongToAdd).subscribe((song: Song) => {
-        if (song) {
-          this.playlist.songs.push(song);
-          this.ytIdOfSongToAdd = '';
-        }
-      });
-    }
+  protected findSong(ytId: string) {
+    this.youtubeApiService.getSong(ytId).subscribe((song: Song) => {
+      if (song) {
+        this.playlist.songs.push(song);
+        this.ytIdOfSongToAdd = '';
+      }
+    });
   }
 
   onSubmit(): void {
@@ -110,4 +111,6 @@ export class AdminCreateComponent extends AdminComponent {
   removeSong(song: Song) {
     this.playlist.songs = this.playlist.songs.filter((s) => s.ytId !== song.ytId);
   }
+
+
 }
