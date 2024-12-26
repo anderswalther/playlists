@@ -46,6 +46,7 @@ export class PlaylistService {
       message: playlist.message,
       background: playlist.background,
       textColor: playlist.textColor,
+      vintageFilter: playlist.vintageFilter,
       songs,
     });
   }

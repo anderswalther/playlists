@@ -2,7 +2,7 @@ import { Component, Inject, Input } from '@angular/core';
 import { Playlist } from '../../../shared/models/playlist';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PlaylistComponent } from '../../playlist.component';
+import { PlaylistComponent } from '../../playlist/playlist.component';
 
 @Component({
   selector: 'app-admin-preview',

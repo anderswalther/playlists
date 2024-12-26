@@ -1,14 +1,17 @@
+import {VintageFilter} from "./vintage-filters";
+
 export class Playlist {
   public id?: string;
   constructor(
     public message: string,
     public background: string,
     public textColor: string,
+    public vintageFilter: VintageFilter,
     public songs: Song[]
   ) {}
 
   public static emptyPlaylist(): Playlist {
-    return new Playlist('', '', 'black', []);
+    return new Playlist('', '', 'black', VintageFilter.NONE, []);
   }
 
   public generateId() {

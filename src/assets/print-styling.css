@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: dkaurevoir;
-  src: url(DKAuRevoir.otf);
+  src: url(fonts/DKAuRevoir.otf);
 }
 
 .playlist-content {
@@ -84,7 +84,7 @@ qrcode {
 
   @font-face {
     font-family: dkaurevoir;
-    src: url(DKAuRevoir.otf);
+    src: url(fonts/DKAuRevoir.otf);
   }
 
   span.message {

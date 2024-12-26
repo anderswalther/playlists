@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Song } from '../../../shared/models/playlist';
+import {Song} from '../../../shared/models/playlist';
 import { YoutubeApiService } from '../../../../services/youtubeapi-service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminPreviewComponent } from '../admin-preview/admin-preview.component';
@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   YoutubeSearchComponent
 } from "../../../shared/components/youtube-search/youtube-search/youtube-search.component";
+import { VintageFilter } from '../../../shared/models/vintage-filters';
 
 @Component({
   selector: 'app-admin-create',
@@ -39,10 +40,18 @@ import {
             placeholder="background *"
           />
 
+
+          <select class="vintage-filter" [(ngModel)]="playlist.vintageFilter" name="vintageFilter">
+            <option value="{{VintageFilter.NONE}}">no vintage filter</option>
+            <option value="{{VintageFilter.VINTAGE_DARKER}}">background vintage filter: dark</option>
+            <option value="{{VintageFilter.VINTAGE_BRIGHTER}}">background vintage filter: bright</option>
+          </select>
+
           <select class="song-text-color" [(ngModel)]="playlist.textColor" name="textColor">
             <option value="black">Song info color: dark</option>
             <option value="rgb(215, 154, 164, 0.6)">Song info color: light purple</option>
           </select>
+
 
           <app-youtube-search (videoSelected)="findSong($event.id)"></app-youtube-search>
           <div class="add-song-row">
@@ -113,4 +122,5 @@ export class AdminCreateComponent extends AdminComponent {
   }
 
 
+  protected readonly VintageFilter = VintageFilter;
 }

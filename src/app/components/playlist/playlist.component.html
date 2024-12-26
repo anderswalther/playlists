@@ -1,0 +1,29 @@
+@if (playlist) {
+  @if (backgroundLoaded) {
+    <div class="container">
+      <div class="background-image-container">
+        <div [style.backgroundImage]="'url(' + playlist.background + ')'"
+             class="background-image"
+             [ngClass]="{'vintage-darker': playlist.vintageFilter === VintageFilter.VINTAGE_DARKER, 'vintage-brighter': playlist.vintageFilter === VintageFilter.VINTAGE_BRIGHTER}">
+        </div>
+      </div>
+      <div class="message-wrapper">
+        <div class="message-container">
+          <span class="message" style="white-space: pre-line">{{ playlist.message }}</span>
+        </div>
+      </div>
+
+      @if (playlist && !!playlist.id) {
+        <app-player [playlist]="playlist"></app-player>
+      }
+      <app-printer #printer [playlist]="playlist"></app-printer>
+      <img class="normal-icon" src="assets/icons/printer.png" alt="print button" (click)="print()" />
+    </div>
+  } @else {
+    <app-loadscreen></app-loadscreen>
+    <app-preloader
+      [backgroundImageUrl]="playlist.background"
+      (allImagesLoaded)="onImagesDoneLoading()"
+    ></app-preloader>
+  }
+}
